@@ -1,5 +1,5 @@
 ---
-permalink: README.html
+permalink: /about
 ---
 
 # Wedding Website
