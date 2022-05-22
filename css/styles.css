@@ -4,7 +4,7 @@
 
 p
 {
-    font-size: 15px;
+    font-size: 1.07rem;
     line-height: 29px;
 
     padding-bottom: 20px;
@@ -14,12 +14,12 @@ p
 
 h1
 {
-    font-size: 60px;
+    font-size: 4.3rem;
 }
 
 h2
 {
-    font-size: 40px;
+    font-size: 2.86rem;
     font-weight: 300;
 
     color: #3d4351;
@@ -27,7 +27,7 @@ h2
 
 h3
 {
-    font-size: 18px;
+    font-size: 1.3rem;
     font-weight: 700;
     line-height: 29px;
 
@@ -39,12 +39,12 @@ h3
 
 h4
 {
-    font-size: 18px;
+    font-size: 1.29rem;
 }
 
 h5
 {
-    font-size: 15px;
+    font-size: 1.07rem;
     font-weight: 500;
 
     text-transform: uppercase;
@@ -54,7 +54,7 @@ h5
 
 .btn
 {
-    font-size: 13px;
+    font-size: 0.93rem;
 
     display: inline-block;
 
@@ -76,7 +76,7 @@ h5
 
 .btn-white
 {
-    font-size: 13px;
+    font-size: 0.93rem;
 
     display: inline-block;
 
@@ -106,6 +106,12 @@ h5
        -moz-border-radius: 40px;
             border-radius: 40px;
     background-color: #e8ca6f;
+
+    width: 100% !important;
+    height: 55px !important;
+    margin: 0px !important;
+
+    padding: 15px !important;
 }
 
 .btn-fill:hover,
@@ -136,6 +142,15 @@ section.features-extra,
 section.rsvp
 {
     background: #fff;
+}
+
+label{
+  margin-bottom: 0px !important;
+}
+
+input[type="checkbox"], input[type="radio"]
+{
+  margin-bottom: 5px;
 }
 
 section.features,
@@ -228,7 +243,7 @@ section .header
 .tooltip
 {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 0.86rem;
     font-weight: normal;
     line-height: 1.4;
 
@@ -537,7 +552,7 @@ section .header
 
 .hero p.intro
 {
-    font-size: 20px;
+    font-size: 1.43rem;
     font-weight: 300;
 
     margin-bottom: 80px;
@@ -591,7 +606,7 @@ header
 
 header a
 {
-    font-size: 13px;
+    font-size: 0.93rem;
 
     text-transform: uppercase;
 
@@ -672,7 +687,7 @@ header .member-actions
 
 .down-arrow
 {
-    font-size: 30px;
+    font-size: 2.14rem;
 
     position: absolute;
     bottom: 30px;
@@ -690,7 +705,7 @@ header .member-actions
 
 .intro span.icon
 {
-    font-size: 40px;
+    font-size: 2.86rem;
     font-weight: bold;
 
     color: #e8ca6f;
@@ -748,7 +763,7 @@ header .member-actions
 
 .features span.icon
 {
-    font-size: 35px;
+    font-size: 2.5rem;
     font-weight: bold;
 
     color: #e8ca6f;
@@ -887,7 +902,7 @@ header .member-actions
 .hero-strip i
 {
     font-family: 'Nunito', sans-serif;
-    font-size: 25px;
+    font-size: 1.8rem;
     font-weight: 300;
     font-style: normal;
 
@@ -941,7 +956,7 @@ header .member-actions
 
 .events .time
 {
-    font-size: 13px;
+    font-size: 0.93rem;
     font-style: italic;
 
     text-transform: lowercase;
@@ -967,7 +982,7 @@ header .member-actions
 
 .blog h2
 {
-    font-size: 11px;
+    font-size: 0.8rem;
     font-weight: 500;
 
     margin-top: 35px;
@@ -1010,7 +1025,7 @@ header .member-actions
 
 .blog .blog-img-wrap i
 {
-    font-size: 20px;
+    font-size: 1.43rem;
 
     position: absolute;
     top: 25px;
@@ -1045,7 +1060,7 @@ header .member-actions
 
 .blog figcaption i
 {
-    font-size: 15px;
+    font-size: 1.07rem;
 
     margin-left: 5px;
 }
@@ -1107,7 +1122,7 @@ header .member-actions
 
 #eng-pics .img-wrap i
 {
-    font-size: 15px;
+    font-size: 1.07rem;
 
     position: absolute;
     top: 6px;
@@ -1187,7 +1202,7 @@ header .member-actions
 
 #video-content h5
 {
-    font-size: 30px;
+    font-size: 2.14rem;
     font-weight: 300;
 
     letter-spacing: 10px;
@@ -1262,20 +1277,16 @@ header .member-actions
 
 .rsvp .rsvp-form .rsvp-btn
 {
-    font-size: 13px;
-
-    width: 100%;
-    padding: 15px 0;
-
+    font-size: 0.93rem;
     border-radius: 3px;
 }
 
-.rsvp .rsvp-form .form-input-group
+.form-input-group
 {
     position: relative;
 
     width: 100%;
-    height: 55px;
+    /* height: 55px; */
     margin: 0 auto 10px;
 
     text-align: left;
@@ -1286,14 +1297,13 @@ header .member-actions
             border-radius: 5px;
 }
 
-.rsvp .rsvp-form .form-input-group i
+.form-input-group i
 {
-    font-size: 14px;
 
     color: #e8ca6f;
 }
 
-.rsvp .rsvp-form .form-input-group i:after
+.form-input-group i:not(.fa-right):after
 {
     position: absolute;
     top: 50%;
@@ -1308,25 +1318,44 @@ header .member-actions
     border-right: solid 1px #e6e9ea;
 }
 
-.rsvp .rsvp-form .form-input-group i.fa-user,
-.rsvp .rsvp-form .form-input-group i.fa-users,
-.rsvp .rsvp-form .form-input-group i.fa-envelope,
-.rsvp .rsvp-form .form-input-group .fa-key
+.form-input-group i.fa:not(.fa-right)
 {
-    font-size: 14px;
-
     position: absolute;
     top: 50%;
 
-    margin-left: 20px;
+    margin-left: 15px;
 
     transform: translateY(-50%);
 }
 
-.rsvp .rsvp-form .form-input-group input
+.form-input-group i.fa-right
+{
+    position: absolute;
+    top: 50%;
+    right: 5%;
+
+    margin-left: 15px;
+
+    transform: translateY(-50%);
+    color: rgb(71, 114, 196);
+}
+
+.popover
+{
+  pointer-events: none;
+  /* left: 68% !important; */
+}
+
+.other-input
+{
+  width: 85%;
+  max-width: 10rem;
+}
+
+.form-input-group>input:not([type='checkbox'])
 {
     width: 100%;
-    height: 100%;
+    height: 55px;
     padding-left: 68px;
 
     border: 0;
@@ -1335,24 +1364,75 @@ header .member-actions
             border-radius: 6px;
 }
 
-.rsvp .rsvp-form .form-input-group input::-webkit-input-placeholder
+.form-input-group select
+{
+    width: 100%;
+    height: 55px;
+    padding-left: 63px;
+
+    border: 0;
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+}
+
+.form-input-group>label
+{
+    width: auto;
+    height: 55px;
+    padding-left: 63px;
+    padding-top: 20.5px;
+    margin-right: 10px;
+
+    border: 0;
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+}
+
+.form-input-group .checkbox, .form-input-group .radio
+{
+    width: 100%;
+    padding-left: 10px;
+    vertical-align: middle;
+
+
+    border: 0;
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+}
+
+
+.collapse.in
+{
+  height: auto !important;
+}
+
+.form-input-group input::-webkit-input-placeholder
 {
     color: #bcc1c3;
 }
 
-.rsvp .rsvp-form .form-input-group input:-moz-placeholder
+.form-input-group input:-moz-placeholder
 {
     color: #bcc1c3;
 }
 
-.rsvp .rsvp-form .form-input-group input::-moz-placeholder
+.form-input-group input::-moz-placeholder
 {
     color: #bcc1c3;
 }
 
-.rsvp .rsvp-form .form-input-group input:-ms-input-placeholder
+.form-input-group input:-ms-input-placeholder
 {
     color: #bcc1c3;
+}
+
+.form-section-title
+{
+  padding-bottom: 2px;
+  font-size: 1rem;
 }
 
 footer .content
@@ -1364,7 +1444,7 @@ footer .content
 
 footer .to-top-wrapper
 {
-    font-size: 30px;
+    font-size: 2.14rem;
 
     display: block;
 
@@ -1397,7 +1477,7 @@ footer .to-top-wrapper .to-top:hover
 
 footer span.fa-heart
 {
-    font-size: 18px;
+    font-size: 1.3rem;
 
     margin: 0 2px;
 

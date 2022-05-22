@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    //Enable bootstrap popover plugin
+    $('[data-toggle="popover"]').popover();
+
     /***************** Waypoints ******************/
 
     $('.wp1').waypoint(function () {
@@ -209,14 +212,115 @@ $(document).ready(function () {
 
     /********************** RSVP **********************/
     $('#rsvp-form').on('submit', function (e) {
-        e.preventDefault();
-        var data = $(this).serialize();
+        e.preventDefault(); /* Prevents form submission. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
+        var data = $(this).serialize(); /* https://api.jquery.com/serialize/ */
 
         $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> We are saving your details.'));
 
-        if (MD5($('#invite_code').val()) !== 'b0e53b10c1f55ede516b240036b88f40'
-            && MD5($('#invite_code').val()) !== '2ac7f43695eb0479d5846bb38eec59cc') {
-            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your invite code is incorrect.'));
+        //list of valid UUID hashes for basic typo prevention and (limited) security.
+        const md5_hash_array = ['28826f365493f54b25db9cabba2d34d1',
+        'a75663ae5a56a0e01eb0e26d7da2eaae',
+        'c1cbc7bdc47fe6d3da2cabb171bf2139',
+        '3e3e9841940003d52fe5e50496be0514',
+        'cd1b0f5d2b511b28b550eacf7e00b56d',
+        'a33fe3785715ffadefee260fcda1d14d',
+        '569f89e24c5f468bd73830c7924e71c6',
+        '16b4e29c3000c83e7c4028120f11fd08',
+        '7659e1249004a3129c47861b2a19393c',
+        '21319cd98a98e9d74b6fb44ae42e8432',
+        '2d0dad563d0146830996bbc252dfe178',
+        'fa746f0411ec2588e4b46cbbd6c12d17',
+        '09f359c5121af0c06c69f1b218b54976',
+        'f0c37696ffb6ff2177d2e1e912662740',
+        '9ebfdc0ffa8beaccd3aeeca40844c8ad',
+        '1de0932ae408ec2f134345fc2b9063f0',
+        'e5c14595830d50b8cd93cb39173e1280',
+        '12cf681fc0c24620f7666c628782479b',
+        'cd94fdac4d080b4b9d7f40d2a12ffc41',
+        '05e3397be7b7e854104fd3f5cf07d0f5',
+        'b84ba6b6505e6c064ee8b67422a91410',
+        '7f77ab72fddc6069dd78aed50a352866',
+        '2101f941de195756180b06d10499c9c1',
+        'cbd40409b10d222610feeb8336eafda8',
+        'bf97668504c1063baddaf50d85f65e33',
+        'fe9010901eef38af3dce8c19194337e2',
+        '7ed5c1bbfc518e6a03362e4320c638f4',
+        'a8854931f130ef6e44c655cf80830e65',
+        'abf5d7b52ab4a97b845ed2ee2ab877c7',
+        '29d64f54f02101e18df1538d42192289',
+        'a34de8debf1bb84eb01579f18c11badf',
+        'f34e56e9c9ca5f7c25498cec19e6ae2a',
+        '0a6c677399ae370c10eb3d1e8ae480e7',
+        '69d6941cc620454320312b61ca70769b',
+        'de263b9a6fd0b3a70b2b13dd8411e10e',
+        'fe566e34737383c1f287974cd2f78d59',
+        'ab8055fdec4566faa9a0d1c7614cb22b',
+        '3417284af6ef427fe7d688a474c0868b',
+        'fd7a98cfbee4f5dff63356f024cc9578',
+        '01e192619f5a4257070db67638ea6404',
+        'a8c85129bdc20f7c2c846db92908ad61',
+        '4050e6a8df2654912611690bcaee6ff4',
+        'd5800c12c47566ada2ade4a296531b81',
+        'c0a1492685d31218dada855ab2b734fd',
+        '13249f87a13cea02e2772d379818a2fa',
+        '12cc2011828e7a1b4a140ae1a1836369',
+        '311b3033f7686e345edbf324bcf019a0',
+        '008548e7661c92b3c0f6b53a0375ec07',
+        'ad2ee0c38d57d21835ccfb2249e40372',
+        'e5f7846a831525cf55ddfa61a1b563e9',
+        'a3e810379a4467d552ee0ddac767a5ac',
+        'aa356bdfc155d883c852bc551b99ae3a',
+        '0764748bd2cea54d6736780491f92a62',
+        '6dfdb9d1561d065197814d178c217fa4',
+        '6f04bd5bf8612e852241a48edce50db2',
+        '49a34e2b58de064820a35637398d63fe',
+        'b200ce6e7fe4494a2e0f1af80eca6297',
+        '6da57b294656197d9dea8f0f932ae14c',
+        'f4c823cff8ec6ea2ced3d1ecde4ee4c4',
+        '19cf717faec8e0083efd866ee7b2f7ee',
+        'ff30d5b2c7edb697def475aa51411040',
+        '1684ba5833f7d2d7b9e3eed62734694e',
+        '8264c281b662b55668c41c1fea93bb93',
+        '6f22499b249255ef3fef0167a103c72a',
+        '083286b90328bed00f8efa103688568e',
+        'bb7b536171efcdff8ab33121c6ea16e3',
+        '71d737e5c2c1a6b940670bdf21daba62',
+        '959ad95ddcf1031713b428d6195b07cf',
+        'ed122dea31a6c1411c9f1fd23f0d8b3e',
+        '9d31f4a6fb24b95c9de24aed9750d8b1',
+        'c88d8038087b0882ca59b14a858a5797',
+        '8f6227c1f7f2f7fefdb21015d0258ccc',
+        '0b4c5d42626bedaf63f8eb536696dfdc',
+        'f9d483be991cc326072dc5c4714e6550',
+        '94657a6afe2d529358a69f7ce038bcd6',
+        'b0f7b6d1e3cc10d50e44cd4507feea16',
+        '1e3156dd7053207b3e7127bd3e62f9bc',
+        '13df497b0a2ae1b403bac46ad8cf4339',
+        '44b89bad18e24d9c320ccf1bae8d4618',
+        '37488e9f8426d9bed2113f713e025385',
+        '09f310f0837ed8c94cbaa95d9d6d2c3f',
+        '3d9ed8742e950702b95abe94bbe448ec',
+        '91343d6d59f9a18ee887718217a56614',
+        '34293c228404f1ea5445dcbd879261d3',
+        '7d48a47e9c63f175b0217729acc6f24f',
+        'd24e82cfa9050af020f709b9fb5ba7df',
+        '06b08e404921c2fbe90dc8fd2817fe38',
+        'f957da2a76a535a2e1bc585ea289b49a',
+        '7acfac8c3a5e6895b0eeac177a7a522f',
+        '7785cf3c8edbe588375a7c92aedcc2d8',
+        'e5910b3224e45a499f679a75e5936f3b',
+        '7e6325506ae4d625f6dbb9e245311181',
+        '8ea0d5ca604edba79b4ff39380dcf9cb',
+        '50e4ff4fca673058401af0215e6cb80f',
+        '15d6d801a15d5db3a7da97c5dbbe3922',
+        'e342bd6eb175d70d3a8b575f855f2c97',
+        '93255925853c7b79f295b90b75511e74',
+        '5b0e3885aeebc035cb74fddee6e1d9e8',
+        'bdec359915853c3bfd56154f9010fd5d',
+        'eceb006ac7901ec1655f7cd24cf742e1'];
+
+        if (md5_hash_array.indexOf(MD5($('#uuid').val())) < 0) {
+            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your UUID is not valid. Please contact us for help!'));
         } else {
             $.post('https://script.google.com/macros/s/AKfycbzUqz44wOat0DiGjRV1gUnRf4HRqlRARWggjvHKWvqniP7eVDG-/exec', data)
                 .done(function (data) {
