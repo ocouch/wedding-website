@@ -186,8 +186,6 @@ a
             transition-duration: 200ms;
     -webkit-transition-property: color, border-color, background-color;
             transition-property: color, border-color, background-color;
-
-    color: #e8ca6f;
 }
 
 a:hover,
@@ -1295,15 +1293,23 @@ header .member-actions
     -webkit-border-radius: 5px;
        -moz-border-radius: 5px;
             border-radius: 5px;
+
+            background-color:#fff;
 }
 
-.form-input-group i
+.multi-input-group
+{
+padding: 5px;
+background-color: #fafafa;
+}
+
+.form-input-group>i
 {
 
     color: #e8ca6f;
 }
 
-.form-input-group i:not(.fa-right):after
+.form-input-group>i:not(.fa-right):after
 {
     position: absolute;
     top: 50%;
@@ -1318,7 +1324,7 @@ header .member-actions
     border-right: solid 1px #e6e9ea;
 }
 
-.form-input-group i.fa:not(.fa-right)
+.form-input-group>i.fa:not(.fa-right)
 {
     position: absolute;
     top: 50%;
@@ -1328,7 +1334,7 @@ header .member-actions
     transform: translateY(-50%);
 }
 
-.form-input-group i.fa-right
+.form-input-group>i.fa-right
 {
     position: absolute;
     top: 50%;
@@ -1349,7 +1355,7 @@ header .member-actions
 .other-input
 {
   width: 85%;
-  max-width: 10rem;
+  max-width: 13rem;
 }
 
 .form-input-group>input:not([type='checkbox'])
@@ -1431,8 +1437,11 @@ header .member-actions
 
 .form-section-title
 {
-  padding-bottom: 2px;
+  padding: 5px;
   font-size: 1rem;
+  color: #333;
+  background-color: inherit;
+  border: none;
 }
 
 footer .content
@@ -1492,4 +1501,16 @@ body.modal-open
 .modal-body
 {
     padding: 25px;
+}
+
+.pointer
+{
+  cursor: pointer;
+}
+
+.not-a-button
+{
+  background-color: inherit;
+  color: inherit;
+  border: none;
 }

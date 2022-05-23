@@ -210,7 +210,38 @@ $(document).ready(function () {
     $('#add-to-cal').html(myCalendar);
 
 
-    /********************** RSVP **********************/
+    /********************** RSVP Form **********************/
+    var guestCount = 1;
+
+    //Copy guest name to the section header
+    $(".attendee").on('keyup', function(){
+      copyValuetoHeader(this);
+    });
+
+    function copyValuetoHeader(element) {
+      guestnumber = element.id.split('_')[1];
+      let userInput = $("#attendee_"+guestnumber).val();
+      console.log(guestnumber);
+      if (userInput.length) {
+        $("#header_"+guestnumber).text(userInput);
+      }else{
+        $("#header_"+guestnumber).text("Guest "+guestnumber);
+      }
+    }
+
+    // Swap +/- symbols on headers when expanding/closing
+    $('.section-title').on('hidden.bs.collapse', function (event) {
+      let guestnumber = event.target.id.split('_')[1];
+      $('#accordionSymbol_'+guestnumber).addClass("fa-plus");
+      $('#accordionSymbol_'+guestnumber).removeClass("fa-minus");
+    });
+
+    $('.section-title').on('show.bs.collapse', function (event) {
+      let guestnumber = event.target.id.split('_')[1];
+      $('#accordionSymbol_'+guestnumber).addClass("fa-minus");
+      $('#accordionSymbol_'+guestnumber).removeClass("fa-plus");
+    });
+
     $('#rsvp-form').on('submit', function (e) {
         e.preventDefault(); /* Prevents form submission. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
         var data = $(this).serialize(); /* https://api.jquery.com/serialize/ */
