@@ -551,6 +551,7 @@ function AddAGuest() {
 
   if (guestCount <= guestLimit) {
     $(template).insertBefore("guestInsertionMarker");
+    $('[data-toggle="popover"]').popover();
   } else {
     $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> You can only RSVP for a maximum of ' + guestLimit + ' people at once.'));
   }
@@ -562,6 +563,7 @@ function deleteGuest(deleteButton) {
   let guestCount = parseInt( $(".guests").length );
 
   $('#guest___' + guestnumber).remove();
+  $("[data-toggle='popover']").popover('destroy'); //Clear all popovers
 
   if (guestCount <= 1) {
     //We just deleted the last guest. Create a new guest.
@@ -588,6 +590,9 @@ function deleteGuest(deleteButton) {
 
   }
 }
+
+  $("[data-toggle='popover']").popover(); //Re-initialise popovers
+
 }
 
 /********************** Extras **********************/
