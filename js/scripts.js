@@ -212,19 +212,19 @@ $(document).ready(function() {
 
   /********************** RSVP Form **********************/
   //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
-  $("#rsvp-form").dirty({preventLeaving: true});
+  //$("#rsvp-form").dirty({preventLeaving: true});
 
   // Swap +/- symbols on headers when expanding/closing
   $(document).on('hidden.bs.collapse', '.section-title', function(event) {
-    let guestnumber = event.target.id.split('___')[1]; //Get guest number
-    $('#accordionSymbol___' + guestnumber).addClass("fa-plus");
-    $('#accordionSymbol___' + guestnumber).removeClass("fa-minus");
+    let guestNumber = event.target.id.split('___')[1]; //Get guest number
+    $('#accordionSymbol___' + guestNumber).addClass("fa-plus");
+    $('#accordionSymbol___' + guestNumber).removeClass("fa-minus");
   });
 
   $(document).on('show.bs.collapse', '.section-title', function(event) {
-    let guestnumber = event.target.id.split('___')[1];
-    $('#accordionSymbol___' + guestnumber).addClass("fa-minus");
-    $('#accordionSymbol___' + guestnumber).removeClass("fa-plus");
+    let guestNumber = event.target.id.split('___')[1];
+    $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
+    $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
   });
 
   $('#rsvp-form').on('submit', function(e) {
@@ -360,12 +360,12 @@ $(document).ready(function() {
 
 //RSVP Form: Copy guest name to the section header
 function copyGuestNametoHeader(element) {
-  let guestnumber = element.id.split('___')[1];
-  let userInput = $("#attendee___" + guestnumber).val();
+  let guestNumber = element.id.split('___')[1];
+  let userInput = $("#attendee___" + guestNumber).val();
   if (userInput.length) {
-    $("#header___" + guestnumber).text(userInput);
+    $("#header___" + guestNumber).text(userInput);
   } else {
-    $("#header___" + guestnumber).text("Guest " + guestnumber);
+    $("#header___" + guestNumber).text("Guest " + guestNumber);
   }
 }
 
@@ -559,10 +559,10 @@ function AddAGuest() {
 
 //RSVP Form: Delete a guest (and update numbering)
 function deleteGuest(deleteButton) {
-  let guestnumber = parseInt(deleteButton.dataset.guestnum);
+  let guestNumber = parseInt(deleteButton.dataset.guestnum);
   let guestCount = parseInt($(".guests").length);
 
-  $('#guest___' + guestnumber).remove();
+  $('#guest___' + guestNumber).remove();
   $("[data-toggle='popover']").popover('destroy'); //Clear all popovers (prevents orphaned popovers if user deletes while a popover is open)
 
   if (guestCount <= 1) {
@@ -571,36 +571,66 @@ function deleteGuest(deleteButton) {
 
   } else {
     //Re-number the existing guests (that are after this one)
-    for (let i = guestnumber; i < guestCount; i++) {
-      let iNext = i + 1; //fix for string concat vs addition confusion
+    for (let i = guestNumber; i < guestCount; i++) {
+      let iNext = i + 1;
+      let target = $('#guest___' + iNext);
 
       //Update the delete button target
       document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
 
-      //Preserve field values and statuses. (input values are associated with element name attribute. Renaming therefore loses the values unless we manually preserve them)
-      while (parseInt($('input[name$="___' + iNext + '"], select[name$="___' + iNext + '"]').length)) {
-        //get next input/select field
-        let nextElement = $('input[name$="___' + iNext + '"], select[name$="___' + iNext + '"]').first(); //get next element
-        //temporarily store value and status
-        let tempVal = nextElement.val();
-        let tempChecked = nextElement.is(':checked');
-        //update the name
-        nextElement.attr('name', (nextElement.attr('name')).replace('___' + iNext, '___' + i));
-        //reassign value/status
-        nextElement.val(tempVal);
-        nextElement.prop('checked', tempChecked);
+      //I'm sure there's a better way to do this, say by recursively looping through all elements and their attributes,
+      //but if it's stupid and it works...
+
+      //update all name attributes
+      $.each(target.find('[name$="___' + iNext + '"]'), function() {
+        $(this).attr('name', $(this).attr('name').replace("___" + iNext, "___" + i));
+      });
+
+      //update all ID attributes
+      $.each(target.find('[id$="___' + iNext + '"]'), function() {
+        $(this).prop('id', $(this).prop('id').replace("___" + iNext, "___" + i));
+      });
+
+      //update all data-target attributes
+      $.each(target.find('[data-target$="___' + iNext + '"]'), function() {
+        $(this).attr('data-target', $(this).attr('data-target').replace("___" + iNext, "___" + i));
+      });
+
+      //update all aria-controls attributes
+      $.each(target.find('[aria-controls$="___' + iNext + '"]'), function() {
+        $(this).attr('aria-controls', $(this).attr('aria-controls').replace("___" + iNext, "___" + i));
+      });
+
+      //update all onclick attributes
+      $.each(target.find('[onclick*="___' + iNext + '"]'), function() {
+        let regex = new RegExp('___' + iNext, 'g');
+        $(this).attr('onclick', $(this).attr('onclick').replace(regex, "___" + i));
+      });
+
+      //Update guest header
+      if (!($('#attendee___' + i).val())) {
+        $('#header___' + i).text('Guest ' + i);
       }
+
+      //Update guest div ID
+      target.attr('id', 'guest___' + i);
+
+
+      /*
+      This approach works, but because it replaces the HTML using strings
+      all field values and checked statuses are lost.
+
+      //Update all the human legible info
+      let target = document.getElementById('guest___' + iNext);
+      let regex = new RegExp('[Gg]uest ' + iNext, 'g');
+      target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
+
+      //Update the rest of the elements
+      target = document.getElementById('guest___' + iNext);
+      regex = new RegExp('_{3}' + iNext, 'g');
+      target.outerHTML = target.outerHTML.replace(regex, '___' + i);
+      */
     }
-
-    //Update the rest of the elements
-    target = document.getElementById('guest___'+ iNext );
-    regex = new RegExp('_{3}'+ iNext, 'g');
-    target.outerHTML = target.outerHTML.replace(regex, '___'+i);
-
-    //Update all the human legible info
-    let target = document.getElementById('guest___' + iNext);
-    let regex = new RegExp('[Gg]uest ' + iNext, 'g');
-    target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
   }
   //Re-initialise popovers
   $("[data-toggle='popover']").popover();
