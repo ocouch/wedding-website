@@ -211,7 +211,7 @@ $(document).ready(function() {
 
 
   /********************** RSVP Form **********************/
-  //Warn if unsaved changes
+  //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
   $("#rsvp-form").dirty({preventLeaving: true});
 
   // Swap +/- symbols on headers when expanding/closing
@@ -356,7 +356,7 @@ $(document).ready(function() {
     }
   });
 
-});
+}); // End $(document).ready
 
 //RSVP Form: Copy guest name to the section header
 function copyGuestNametoHeader(element) {
@@ -424,42 +424,42 @@ function AddAGuest() {
           </div>
           <div class="collapse" id="allergens_collapse___${guestCount}" aria-expanded="false">
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Gluten" /> Gluten</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Gluten" /> Gluten</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Shellfish/Crustaceans" /> Shellfish/Crustaceans</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Shellfish/Crustaceans" /> Shellfish/Crustaceans</label>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Egg" /> Egg</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Egg" /> Egg</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Fish" /> Fish</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Fish" /> Fish</label>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-2 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Milk" /> Milk</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Milk" /> Milk</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Peanuts" /> Peanuts</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Peanuts" /> Peanuts</label>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Tree Nuts" /> Tree nuts</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Tree Nuts" /> Tree nuts</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-5 col-lg-3 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Sesame Seeds" /> Sesame Seeds</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Sesame Seeds" /> Sesame Seeds</label>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Soybeans" /> Soybean</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Soybeans" /> Soybean</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-3 col-lg-4 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Sulphites" /> Sulphites</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Sulphites" /> Sulphites</label>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-3 col-xlg-3">
-              <label><input type="checkbox" name="allergens___${guestCount}[]" value="Lupin" /> Lupin</label>
+              <label><input type="checkbox" name="allergens___${guestCount}" value="Lupin" /> Lupin</label>
             </div>
             <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3 col-xlg-3">
               <div class="row">
                 <div class="col-xs-12">
-                  <input type="checkbox" name="allergens___${guestCount}[]" value="Other" /> <input type="text" name="allergens___${guestCount}[]" class="other-input" placeholder="Other">
+                  <input type="checkbox" name="allergens___${guestCount}" value="Other" /> <input type="text" name="allergens___${guestCount}" class="other-input" placeholder="Other">
                 </div>
               </div>
             </div>
@@ -557,42 +557,53 @@ function AddAGuest() {
   }
 }
 
-//RSVP Form: Delete a guest (and update guest numbering)
+//RSVP Form: Delete a guest (and update numbering)
 function deleteGuest(deleteButton) {
-  let guestnumber = parseInt( deleteButton.dataset.guestnum );
-  let guestCount = parseInt( $(".guests").length );
+  let guestnumber = parseInt(deleteButton.dataset.guestnum);
+  let guestCount = parseInt($(".guests").length);
 
   $('#guest___' + guestnumber).remove();
-  $("[data-toggle='popover']").popover('destroy'); //Clear all popovers
+  $("[data-toggle='popover']").popover('destroy'); //Clear all popovers (prevents orphaned popovers if user deletes while a popover is open)
 
   if (guestCount <= 1) {
     //We just deleted the last guest. Create a new guest.
     AddAGuest();
 
-  }else{
-    //Update the existing guests
+  } else {
+    //Re-number the existing guests (that are after this one)
+    for (let i = guestnumber; i < guestCount; i++) {
+      let iNext = i + 1; //fix for string concat vs addition confusion
 
-  for (let i = guestnumber; i < guestCount; i++) {
-    iNext = i+1;
+      //Update the delete button target
+      document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
 
-    //Update the delete button target
-    document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
+      //Preserve field values and statuses. (input values are associated with element name attribute. Renaming therefore loses the values unless we manually preserve them)
+      while (parseInt($('input[name$="___' + iNext + '"], select[name$="___' + iNext + '"]').length)) {
+        //get next input/select field
+        let nextElement = $('input[name$="___' + iNext + '"], select[name$="___' + iNext + '"]').first(); //get next element
+        //temporarily store value and status
+        let tempVal = nextElement.val();
+        let tempChecked = nextElement.is(':checked');
+        //update the name
+        nextElement.attr('name', (nextElement.attr('name')).replace('___' + iNext, '___' + i));
+        //reassign value/status
+        nextElement.val(tempVal);
+        nextElement.prop('checked', tempChecked);
+      }
+    }
 
-    //Update all the human relevant info
-    let target = document.getElementById('guest___'+ iNext );
-    let regex = new RegExp('[Gg]uest '+ iNext, 'g');
-    target.outerHTML = target.outerHTML.replace(regex, 'Guest '+i);
-
-    //Update all the element ID's
+    //Update the rest of the elements
     target = document.getElementById('guest___'+ iNext );
     regex = new RegExp('_{3}'+ iNext, 'g');
     target.outerHTML = target.outerHTML.replace(regex, '___'+i);
 
+    //Update all the human legible info
+    let target = document.getElementById('guest___' + iNext);
+    let regex = new RegExp('[Gg]uest ' + iNext, 'g');
+    target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
   }
-}
-
-  $("[data-toggle='popover']").popover(); //Re-initialise popovers
-
+  //Re-initialise popovers
+  $("[data-toggle='popover']").popover();
 }
 
 /********************** Extras **********************/
