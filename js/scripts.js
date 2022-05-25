@@ -356,7 +356,7 @@ $(document).ready(function() {
     }
   });
 
-  //Hide popovers on 
+  //Hide popovers on click close button
   $(document).click(function (e) {
     if ($(e.target).is('.close')) {
       e.preventDefault();
@@ -520,7 +520,7 @@ function AddAGuest() {
 
       <!-- Begin Guest ${guestCount} Mobility assistance -->
       <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Mobility assistance" data-placement="auto bottom" data-html="true"
+        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Mobility assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
           data-content="The ceremony will be held on the 10th Fairway - this is a few hundred metres walk from the car park and reception venue. <br /><br />We will have golf carts (with drivers) available to give a lift to those who need it.">
           <div class="form-input-group pointer"  onclick="$('#mobility___${guestCount}').prop('checked', !($('#mobility___${guestCount}').prop('checked')));">
             <i class="fa fa-wheelchair fa-lg"></i>
@@ -534,7 +534,7 @@ function AddAGuest() {
 
       <!-- Begin Guest ${guestCount} Transportation -->
       <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Event Shuttle Bus" data-placement="auto bottom" data-html="true"
+        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Event Shuttle Bus <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
           data-content="We have arranged a small shuttle bus between the ceremony/reception venue and the main guest hotel.<br /><br />There is limited seating available. If you might require this with a child seat, please let us know and we'll see what we can organise.<br /><br />Please check this box if you'd like us to save you a seat.">
           <div class="form-input-group pointer" onclick="$('#transport___${guestCount}').prop('checked', !($('#transport___${guestCount}').prop('checked')));" >
             <i class="fa fa-bus fa-lg"></i>
