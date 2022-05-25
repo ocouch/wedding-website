@@ -1346,12 +1346,6 @@ background-color: #fafafa;
     color: rgb(71, 114, 196);
 }
 
-.popover
-{
-  pointer-events: none;
-  /* left: 68% !important; */
-}
-
 .other-input
 {
   width: 85%;

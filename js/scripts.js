@@ -356,6 +356,15 @@ $(document).ready(function() {
     }
   });
 
+  //Hide popovers on 
+  $(document).click(function (e) {
+    if ($(e.target).is('.close')) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('.popover').popover('hide');
+    }
+});
+
 }); // End $(document).ready
 
 //RSVP Form: Copy guest name to the section header
@@ -392,7 +401,7 @@ function AddAGuest() {
 
       <!-- Begin Guest ${guestCount} name -->
       <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Guest names" data-placement="auto bottom" data-html="true"
+        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Guest names <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
           data-content="We will print placecards for everyone using names as entered here.<br /><br />Please enter full names for everyone, and double check the spelling">
           <div class="form-input-group">
             <i class="fa fa-user fa-lg"></i>
