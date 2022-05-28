@@ -442,180 +442,9 @@
             </div>
             <!-- End Group details -->
 
-            <!-- Begin Guest 1 -->
-            <div class="form-input-group multi-input-group guests" id="guest___1">
-
-              <!-- Begin Guest 1 header -->
-              <div class="row">
-                <button data-toggle="collapse" role="button" type="button" data-target="#guestDiv___1" aria-controls="guestDiv___1" class="col-xs-12 form-section-title" style="">
-                  <div class="col-xs-8 col-md-10 text-left" style="padding-left: 25px;" id="header___1">Guest 1</div>
-                  <div class="col-xs-4 col-md-2 text-right"><i class="fa fa-minus fa-lg form-section-title" id="accordionSymbol___1"></i></div>
-                </button>
-              </div>
-              <!-- End Guest 1 header -->
-
-              <!-- Begin Guest 1 details -->
-              <div class="row collapse in section-title" aria-expanded="true" id="guestDiv___1">
-
-                <!-- Begin Guest 1 name -->
-                <div class="col-xs-12 col-lg-6">
-                  <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Guest names <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-                    data-content="We will print placecards for everyone using names as entered here.<br /><br />Please enter full names for everyone, and double check the spelling">
-                    <div class="form-input-group">
-                      <i class="fa fa-user fa-lg"></i>
-                      <input type="text" name="attendee___1" id="attendee___1" class="attendee" placeholder="Firstname & Lastname" oninput="copyGuestNametoHeader(this);" required>
-                      <i class="fa fa-info-circle fa-lg fa-right"></i>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Guest 1 name -->
-
-                <!-- Begin Guest 1 meal -->
-                <div class="col-xs-12 col-sm-12 col-lg-6">
-                  <div class="form-input-group">
-                    <i class="fa fa-cutlery fa-lg"></i><select name="age_group___1" class="" placeholder="Meal type" required>
-                      <option value="" hidden>Select guest's meal type</option>
-                      <option value="1">Adult meal</option>
-                      <option value="2">Children's meal (Under 13)</option>
-                      <option value="3">No meal (Infant)</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- End Guest 1 meal -->
-
-                <!-- Begin Guest 1 Allergens -->
-                <div class="col-xs-12">
-                  <div class="form-input-group">
-                    <div class="checkbox">
-                      <label><input type="checkbox" data-toggle="collapse" data-target="#allergens_collapse___1" onclick="if ($(this).prop('checked') == false){ $('#allergens_collapse___1 input').prop('checked', false); $('#allergens_collapse___1 .other-input').val(''); };" />Food Allergies / Intolerances</label>
-                    </div>
-                    <div class="collapse" id="allergens_collapse___1" aria-expanded="false">
-                      <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Gluten" /> Gluten</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Shellfish/Crustaceans" /> Shellfish/Crustaceans</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Egg" /> Egg</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-3 col-lg-3 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Fish" /> Fish</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 col-md-5 col-lg-2 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Milk" /> Milk</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-4 col-lg-4 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Peanuts" /> Peanuts</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Tree Nuts" /> Tree nuts</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-3 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Sesame Seeds" /> Sesame Seeds</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Soybeans" /> Soybean</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-3 col-lg-4 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Sulphites" /> Sulphites</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 col-md-5 col-lg-3 col-xlg-3">
-                        <label><input type="checkbox" name="allergens___1" value="Lupin" /> Lupin</label>
-                      </div>
-                      <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3 col-xlg-3">
-                        <div class="row">
-                          <div class="col-xs-12">
-                            <input type="checkbox" name="allergens___1" value="Other" /> <input type="text" name="allergens___1" class="other-input" placeholder="Other">
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Fix for expanded collapse div sizing. Need this so that form-input-group border encompasses all internal elements when expanded. -->
-                      &nbsp;
-                    </div><!-- Collapsing div -->
-                  </div><!-- Allergens form-input-group -->
-                </div>
-                <!-- End Guest 1 Allergens -->
-
-                <!-- Begin Guest 1 Other dietary requirements -->
-                <div class="col-xs-12 col-sm-12 text-left">
-                  <div class="form-input-group">
-                    <div class="checkbox">
-                      <label><input type="checkbox" data-toggle="collapse" data-target="#dietary_collapse___1" onclick="if ($(this).prop('checked') == false){ $('#dietary_collapse___1 input').prop('checked', false); $('#dietary_collapse___1 .other-input').val(''); };"/>Other dietary restrictions / preferences</label>
-                    </div>
-                    <div class="collapse" id="dietary_collapse___1" aria-expanded="false">
-                      <!-- Vego div -->
-                      <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 col-xlg-2">
-                        <label><input type="radio" value="Vegetarian" name="dietary___1"> Vegetarian</label>
-                      </div>
-                      <!-- Vegan div -->
-                      <div class="col-xs-12 col-sm-8 col-md-3 col-lg-2">
-                        <label><input type="radio" value="Vegan" name="dietary___1"> Vegan</label>
-                      </div>
-                      <!-- Other div -->
-                      <div class="col-xs-12 col-md-6 col-lg-7 col-xlg-8">
-                        <label><input type="radio" value="" name="dietary___1" onchange="$(this).next().focus();"/>&nbsp;<input type="text" name="dietary___1" placeholder="Other" class="other-input" onfocus="$(this).prev().prop('checked', true);" tabindex="-1"/></label>
-                      </div>
-                      <!-- Fix for expanded element sizing. Need this so that form-input-group border encompasses all internal elements when expanded. -->
-                      &nbsp;
-                      </div><!-- Collapsing div -->
-                  </div><!-- form-input-group -->
-                </div><!-- Other dietary cell -->
-                <!-- End Guest 1 Other dietary requirements -->
-
-                <!-- Begin Guest 1 Chair type -->
-                <div class="col-xs-12 col-lg-6">
-                  <div class="form-input-group">
-                    <i class="fa fa-universal-access fa-lg"></i>
-                    <select name="age_group___1" class="" placeholder="Meal type" required>
-                      <option value="Normal" selected>Normal dining chair</option>
-                      <option value="High-chair">Children's high-chair</option>
-                      <option value="No-Chair">No chair (BYO / Wheelchair)</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- End Guest 1 Chair type -->
-
-                <!-- Begin Guest 1 Mobility assistance -->
-                <div class="col-xs-12 col-lg-6">
-                  <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Mobility assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-                    data-content="The ceremony will be held on the 10th Fairway - this is a few hundred metres walk from the car park and reception venue. <br /><br />We will have golf carts (with drivers) available to give a lift to those who need it.">
-                    <div class="form-input-group pointer"  onclick="$('#mobility___1').prop('checked', !($('#mobility___1').prop('checked')));">
-                      <i class="fa fa-wheelchair fa-lg"></i>
-                      <label class="pointer">Mobility assistance required</label>
-                      <input name="mobility___1" id="mobility___1" type="checkbox" style="pointer-events: none;" onclick="event.stopPropagation()" />
-                      <i class="fa fa-info-circle fa-lg fa-right"></i>
-                    </div><!-- form-input-group -->
-                  </div><!-- Popover div -->
-                </div>
-                <!-- End Guest 1 Mobility assistance -->
-
-                <!-- Begin Guest 1 Transportation -->
-                <div class="col-xs-12 col-lg-6">
-                  <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 650 }' title="Event Shuttle Bus <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-                    data-content="We are planning to arrange a small shuttle bus between the ceremony/reception venue and the main guest hotel.<br /><br />There is limited seating available. If you might require this with a child seat, please let us know and we'll see what we can organise.<br /><br />Please check this box if you'd like us to save you a seat.">
-                    <div class="form-input-group pointer" onclick="$('#transport___1').prop('checked', !($('#transport___1').prop('checked')));" >
-                      <i class="fa fa-bus fa-lg"></i>
-                      <label class="pointer">Seat on the shuttle bus</label>
-                      <input name="transport___1" id="transport___1" type="checkbox" style="pointer-events: none;" onclick="event.stopPropagation()" />
-                      <i class="fa fa-info-circle fa-lg fa-right"></i>
-                    </div><!-- form-input-group mobility access -->
-                  </div><!-- Popover div -->
-                </div>
-                <!-- End Guest 1 Transportation -->
-
-                <!-- Begin Guest 1 Remove button -->
-                <div class="col-xs-12 col-lg-6">
-                  <div class="form-input-group">
-                    <button class="btn-fill btn-danger btn" type="button" onmouseup="blur()" onclick="deleteGuest(this);" id="RemoveGuest___1" data-guestnum="1">Delete guest</button>
-                  </div>
-                </div>
-              </div>
-              <!-- End Guest 1 Remove button -->
-
-            </div>
-            <!-- End Guest 1 -->
+            <!-- Form fields for individual guest details inserted here by AddAGuest() - see /js/scripts.js -->
             <guestInsertionMarker></guestInsertionMarker>
+
             <!-- Alert div -->
             <div class="row">
               <div class="col-xs-12 col-sm-12" id="alert-wrapper"></div>
@@ -629,7 +458,7 @@
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6">
-                <button class="btn-fill rsvp-btn" type="button">
+                <button class="btn-fill rsvp-btn" type="submit">
                   Submit RSVP
                 </button>
               </div>
@@ -648,7 +477,7 @@
       <div class="row">
         <div class="col-xs-12 col-md-12 text-center content">
           <span class="to-top-wrapper"><a href="#top" class="to-top"><i class="fa fa-angle-up"></i></a></span>
-          <p><a href="/about.html">About this site</a></p>
+          <p><a href="https://github.com/ocouch/wedding-website#wedding-website">About this site</a></p>
         </div>
       </div>
     </div>

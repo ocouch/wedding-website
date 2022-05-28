@@ -1,8 +1,5 @@
 $(document).ready(function() {
 
-  //Enable bootstrap popover plugin
-  $('[data-toggle="popover"]').popover();
-
   /***************** Waypoints ******************/
 
   $('.wp1').waypoint(function() {
@@ -214,6 +211,11 @@ $(document).ready(function() {
   //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
   //$("#rsvp-form").dirty({preventLeaving: true});
 
+  AddAGuest(); //Adds the form fields for user to enter guest info.
+
+  //Enable bootstrap popover plugin
+  $('[data-toggle="popover"]').popover();
+
   // Swap +/- symbols on headers when expanding/closing
   $(document).on('hidden.bs.collapse', '.section-title', function(event) {
     let guestNumber = event.target.id.split('___')[1]; //Get guest number
@@ -229,7 +231,7 @@ $(document).ready(function() {
 
   $('#rsvp-form').on('submit', function(e) {
     e.preventDefault(); /* Prevents form submission. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
-    var data = $(this).serialize(); /* https://api.jquery.com/serialize/ */
+    var formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
 
     $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> We are saving your details.'));
 
@@ -339,19 +341,16 @@ $(document).ready(function() {
     if (md5_hash_array.indexOf(MD5($('#uuid').val())) < 0) {
       $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your UUID is not valid. Please contact us for help!'));
     } else {
-      $.post('https://script.google.com/macros/s/AKfycbzUqz44wOat0DiGjRV1gUnRf4HRqlRARWggjvHKWvqniP7eVDG-/exec', data)
-        .done(function(data) {
-          console.log(data);
-          if (data.result === "error") {
-            $('#alert-wrapper').html(alert_markup('danger', data.message));
-          } else {
+      $.post('https://script.google.com/macros/s/AKfycbyHxuiv2Ilz8krc7Bw_vGBEdp8oIeQqUozxpGM3mGnE3KdNb3xPUyMpO_jQPEybwZ4gFQ/exec', formData)
+        .done(function(returnData) {
+          console.log('Http request successful');
             $('#alert-wrapper').html('');
             $('#rsvp-modal').modal('show');
-          }
         })
-        .fail(function(data) {
-          console.log(data);
-          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> There is some issue with the server. '));
+        .fail(function(returnData) {
+          console.log('HTTP Request Failed');
+          console.log(returnData);
+          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
         });
     }
   });
