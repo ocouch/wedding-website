@@ -432,10 +432,18 @@
               </div>
               <!-- End Group primary email -->
 
-              <!-- Begin UUID -->
+              <!-- Begin Password salt -->
               <div class="col-xs-12">
                 <div class="form-input-group">
-                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" min="0" placeholder="UUID" required>
+                  <i class="fa fa-key fa-lg"></i><input type="text" name="salt" id="salt" class="" min="0" placeholder="Password" required>
+                </div>
+              </div>
+              <!-- End  UUID -->
+
+              <!-- Begin UUID -->
+              <div class="hidden">
+                <div class="form-input-group">
+                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" min="0" placeholder="UUID" required hidden tabindex="-1" aria-hidden="true">
                 </div>
               </div>
               <!-- End  UUID -->
