@@ -262,10 +262,10 @@ console.log(urlQueryString);
     //list of valid UUID hashes for basic typo prevention and (limited) security.
     const md5_hash_array =
    ['8cfa2282b17de0a598c010f5f0109e7d'];
-/*
+
     if (md5_hash_array.indexOf(MD5($('#uuid').val() + $('#salt').val())) < 0) {
       $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your password seems to be incorrect. Please contact us for help!'));
-    } else { */
+    } else {
       $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
         .done(function(returnData) {
           console.log('Http request successful');
@@ -282,7 +282,7 @@ console.log(urlQueryString);
           console.log(returnData);
           $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
         });
-    // }
+     }
   });
 
   //Hide popovers on click close button
