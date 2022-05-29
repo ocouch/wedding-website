@@ -417,33 +417,39 @@
             <!-- Begin Group details -->
             <div class="row">
               <!-- Begin Group name -->
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="col-xs-12 col-md-6">
                 <div class="form-input-group">
-                  <i class="fa fa-users fa-lg"></i><input type="text" name="group_long" class="" placeholder="Your (group) name" required>
+                  <i class="fa fa-users fa-lg"></i><input type="text" id="group_long" name="group_long" class="" placeholder="Your (group) name" required>
                 </div>
               </div>
               <!-- End Group name -->
 
               <!-- Begin Group primary email -->
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="col-xs-12 col-md-6">
                 <div class="form-input-group">
-                  <i class="fa fa-at fa-lg"></i><input type="email" name="email" class="" placeholder="email@example.com" required>
+                  <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="" placeholder="email@example.com" required>
                 </div>
               </div>
               <!-- End Group primary email -->
 
               <!-- Begin Password salt -->
-              <div class="col-xs-12">
-                <div class="form-input-group">
-                  <i class="fa fa-key fa-lg"></i><input type="text" name="salt" id="salt" class="" min="0" placeholder="Password" required>
+              <div class="col-xs-12 col-md-6">
+                <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Password <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+                  data-content="Please check your invitation email for your password. It is just above the 'RSVP' button.">
+                  <div class="form-input-group">
+                    <i class="fa fa-key fa-lg"></i><input type="text" name="salt" id="salt" class="" placeholder="Password" required><i class="fa fa-info-circle fa-lg fa-right"></i>
+                  </div>
                 </div>
               </div>
               <!-- End  Password salt -->
 
-              <!-- Begin UUID - hidden field -->
-              <div class="col-xs-12">
+              <!-- Begin UUID -->
+              <div class="col-xs-12 col-md-6">
+                <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="UUID <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+                  data-content="Please follow the link in your email invitation - this value should then pre-fill automatically.">
                 <div class="form-input-group">
-                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" min="0" placeholder="UUID" required tabindex="-1" aria-hidden="true">
+                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" placeholder="UUID" required><i class="fa fa-info-circle fa-lg fa-right"></i>
+                </div>
                 </div>
               </div>
               <!-- End  UUID -->
