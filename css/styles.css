@@ -70,8 +70,8 @@ h5
 .btn:focus
 {
     color: #fff;
-    border-color: #e8ca6f;
-    background-color: #e8ca6f;
+    border-color: #e2cf6c;
+    background-color: #e2cf6c;
 }
 
 .btn-white
@@ -90,8 +90,8 @@ h5
 .btn-white:hover,
 .btn-white:focus
 {
-    color: #e8ca6f;
-    border-color: #e8ca6f;
+    color: #e2cf6c;
+    border-color: #e2cf6c;
 }
 
 .btn-fill
@@ -101,11 +101,11 @@ h5
     text-transform: uppercase;
 
     color: #fff;
-    border: solid 2px #e8ca6f;
+    border: solid 2px #e2cf6c;
     -webkit-border-radius: 40px;
        -moz-border-radius: 40px;
             border-radius: 40px;
-    background-color: #e8ca6f;
+    background-color: #e2cf6c;
 
     width: 100% !important;
     height: 55px !important;
@@ -646,7 +646,7 @@ header ul.primary-nav li a
 
 header ul.primary-nav li a:hover
 {
-    color: #e8ca6f;
+    color: #e2cf6c;
 }
 
 header ul.primary-nav li:last-child a
@@ -666,7 +666,7 @@ header ul.member-actions li a
 
 header ul.member-actions li a:hover
 {
-    color: #e8ca6f;
+    color: #e2cf6c;
 }
 
 header .header-nav
@@ -706,7 +706,7 @@ header .member-actions
     font-size: 2.86rem;
     font-weight: bold;
 
-    color: #e8ca6f;
+    color: #e2cf6c;
 }
 
 .intro-icon
@@ -764,7 +764,7 @@ header .member-actions
     font-size: 2.5rem;
     font-weight: bold;
 
-    color: #e8ca6f;
+    color: #e2cf6c;
 }
 
 .features .feature-icon
@@ -1306,7 +1306,7 @@ background-color: #fafafa;
 .form-input-group>i
 {
 
-    color: #e8ca6f;
+    color: #e2cf6c;
 }
 
 .form-input-group>i:not(.fa-right):after
