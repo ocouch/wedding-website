@@ -4,7 +4,7 @@ permalink: /about
 
 # Wedding Website
 A beautiful, feature rich, device friendly wedding website, built on from the efforts of @rampatra.
-This one's accessible from [jenandollie.net](https://jenandollie.net/)
+This one's accessible from [jenandollie.net](https://jenandollie.net/). Still a work in progress, many features still to come.
 _See [wedding.rampatra.com](http://wedding.rampatra.com/) for his demo. Use invite code `271117` to RSVP._
 
 # Highlights

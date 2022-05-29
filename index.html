@@ -83,11 +83,11 @@
       </div>
       <div class="row">
         <div class="col-md-4 hidden-sm"></div>
-        <div class="col-md-4 hidden-sm text-center"><a href="#rsvp" class="btn btn-accent btn-large rsvp-btn">RSVP</a></div>
+        <!--<div class="col-md-4 hidden-sm text-center"><a href="#rsvp" class="btn btn-accent btn-large rsvp-btn">RSVP</a></div>-->
         <div class="col-md-4 hidden-sm"></div>
       </div>
     </div>
-    <div class="down-arrow floating-arrow"><a href="#invitation"><i class="fa fa-angle-down"></i></a></div>
+    <div class="down-arrow floating-arrow"><a href="#rsvp"><i class="fa fa-angle-down"></i></a></div>
   </section>
 <!--
   <section id="invitation" class="section-padding">
@@ -184,7 +184,7 @@
           </a>
         </div>
       </div>
-      <!--<div class="row">
+    --><!-- <div class="row">
             <div class="col-sm-12 section-border section-padding">
             </div>
         </div>--><!--
@@ -229,9 +229,9 @@
                 (band gala) waistcoat & shirt</a> combo.
             </p>
           </div>
-        </div><!-- /.modal-content --><!--
-      </div><!-- /.modal-dialog --><!--
-    </div><!-- /.modal --><!--
+        </div>--><!-- /.modal-content --><!--
+      </div>--><!-- /.modal-dialog --><!--
+    </div>--><!-- /.modal --><!--
 
   </section>
 
@@ -328,7 +328,7 @@
         <div class="col-sm-12 section-border section-padding"></div>
       </div>
     </div>
-    <!--<div class="row">
+  --><!--<div class="row">
         <div class="col-lg-12">
             <div class="diamond floating-logo">
                 <img src="img/sketch-logo.png" alt="Sketch Logo">
@@ -413,6 +413,12 @@
     <!-- Begin RSVP Form -->
     <div class="container">
       <div class="row">
+        <div class="col-xs-12 text-center">
+          <img alt="garland" src="/img/bushel_top_left.png" class="garland" />
+          <img src="/img/bushel_top_right.png" alt="garland" class="garland" />
+        </div>
+      </div>
+      <div class="row">
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xlg-8 col-xlg-offset-2">
           <h3>RSVP</h3>
           <p>Please RSVP by the 1<sup>st</sup> of August, 2022</p>
@@ -421,7 +427,7 @@
             <!-- Begin Group details -->
             <div class="row">
               <!-- Begin Group name -->
-              <div class="col-xs-12 col-md-6">
+              <div class="col-xs-12 col-xlg-6">
                 <div class="form-input-group">
                   <i class="fa fa-users fa-lg"></i><input type="text" id="group_long" name="group_long" class="" placeholder="Your (group) name" required>
                 </div>
@@ -429,7 +435,7 @@
               <!-- End Group name -->
 
               <!-- Begin Group primary email -->
-              <div class="col-xs-12 col-md-6">
+              <div class="col-xs-12 col-lg-6">
                 <div class="form-input-group">
                   <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="" placeholder="email@example.com" required>
                 </div>
@@ -437,7 +443,7 @@
               <!-- End Group primary email -->
 
               <!-- Begin Password salt -->
-              <div class="col-xs-12 col-md-6">
+              <div class="col-xs-12 col-lg-6 col-xlg-12">
                 <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Password <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
                   data-content="Please check your invitation email for your password. It is just above the 'RSVP' button.">
                   <div class="form-input-group">
@@ -448,11 +454,11 @@
               <!-- End  Password salt -->
 
               <!-- Begin UUID -->
-              <div class="col-xs-12 col-md-6">
+              <div class="hidden">
                 <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="UUID <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
                   data-content="Please follow the link in your email invitation - this value should then pre-fill automatically.">
                 <div class="form-input-group">
-                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" placeholder="UUID" required><i class="fa fa-info-circle fa-lg fa-right"></i>
+                  <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" placeholder="UUID" hidden aria-hidden="true" tabindex="-1"><i class="fa fa-info-circle fa-lg fa-right"></i>
                 </div>
                 </div>
               </div>

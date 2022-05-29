@@ -308,12 +308,10 @@ function copyGuestNametoHeader(element) {
 }
 
 //RSVP Form: Add a new guest
-function AddAGuest() {
+function AddAGuest(guestLimit = 10) {
   let guestCount = parseInt($(".guests").length) + 1;
 
-  let guestLimit = 10;
-
-  let template = `<!-- Begin Guest ${guestCount} -->
+  const template = `<!-- Begin Guest ${guestCount} -->
   <div class="form-input-group multi-input-group guests" id="guest___${guestCount}">
 
     <!-- Begin Guest ${guestCount} header -->
@@ -342,7 +340,7 @@ function AddAGuest() {
       <!-- End Guest ${guestCount} name -->
 
       <!-- Begin Guest ${guestCount} meal -->
-      <div class="col-xs-12 col-sm-12 col-lg-6">
+      <div class="col-xs-12 col-lg-6">
         <div class="form-input-group">
           <i class="fa fa-cutlery fa-lg"></i><select name="age_group___${guestCount}" class="" placeholder="Meal type" required>
             <option value="" hidden>Select guest's meal type</option>
@@ -461,22 +459,8 @@ function AddAGuest() {
       </div>
       <!-- End Guest ${guestCount} Mobility assistance -->
 
-      <!-- Begin Guest ${guestCount} Transportation -->
-      <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Event Shuttle Bus <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-          data-content="We have arranged a small shuttle bus between the ceremony/reception venue and the main guest hotel.<br /><br />There is limited seating available. If you might require this with a child seat, please let us know and we'll see what we can organise.<br /><br />Please check this box if you'd like us to save you a seat.">
-          <div class="form-input-group pointer" onclick="$('#transport___${guestCount}').prop('checked', !($('#transport___${guestCount}').prop('checked')));" >
-            <i class="fa fa-bus fa-lg"></i>
-            <label class="pointer">Seat on the shuttle bus</label>
-            <input name="transport___${guestCount}" id="transport___${guestCount}" type="checkbox" style="pointer-events: none;" onclick="event.stopPropagation()" />
-            <i class="fa fa-info-circle fa-lg fa-right"></i>
-          </div><!-- form-input-group mobility access -->
-        </div><!-- Popover div -->
-      </div>
-      <!-- End Guest ${guestCount} Transportation -->
-
-      <!-- Begin Guest ${guestCount} Remove button -->
-      <div class="col-xs-12 col-lg-6">
+    <!-- Begin Guest ${guestCount} Remove button -->
+      <div class="col-xs-12 col-lg-6 col-lg-offset-6">
         <div class="form-input-group">
           <button class="btn-fill btn-danger btn" type="button" onmouseup="blur()" onclick="deleteGuest(this);" id="RemoveGuest___${guestCount}" data-guestnum="${guestCount}">Delete guest</button>
         </div>
