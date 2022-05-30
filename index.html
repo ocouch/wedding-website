@@ -15,16 +15,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jen & Ollie are getting married! :D</title>
   <meta name="description" content="We're goin' to the golf course and we're, gonna get maaaaarrried.">
-  <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="Jen & Ollie are getting married! :D">
   <meta property="og:description" content="We're goin' to the golf course and we're, gonna get maaaaarrried.">
   <meta property="og:image" content="https://jenandollie.net/img/hero-min.jpg">
   <meta property="og:type" content="website">
+  <!--
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="manifest" href="manifest.json">
   <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+  -->
+
+  <!-- From https://realfavicongenerator.net/ -->
+  <!-- See: https://stackoverflow.com/a/48969053/19157546 -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="194x194" href="/favicon-194x194.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#141812">
+  <meta name="apple-mobile-web-app-title" content="Jen &amp; Ollie">
+  <meta name="application-name" content="Jen &amp; Ollie">
+  <meta name="msapplication-TileColor" content="#141812">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#141812">
+
   <link rel="stylesheet" href="css/normalize.min.css">
   <link rel="stylesheet" href="css/jquery.fancybox.css">
   <link rel="stylesheet" href="css/flexslider.css">
@@ -402,7 +420,7 @@
             </button>
             <div class="section-padding">
               <h3>Thank you!</h3>
-              <p>We are glad to see you join us on our big day.</p>
+              <p>We're looking forward to seeing you there!</p>
               <div id="add-to-cal"></div>
             </div>
           </div>
@@ -413,7 +431,6 @@
     <!-- Begin RSVP Form -->
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 text-center">
           <img alt="garland" src="/img/bushel_top_left.png" class="garland" />
           <img src="/img/bushel_top_right.png" alt="garland" class="garland" />
         </div>
@@ -422,7 +439,10 @@
         <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xlg-8 col-xlg-offset-2">
           <h3>RSVP</h3>
           <p>Please RSVP by the 1<sup>st</sup> of August, 2022</p>
-          <form id="rsvp-form" class="rsvp-form" action="" method="POST">
+          <p class="uuid-hide-show">
+            To RSVP, please use the 'RSVP' link in your invitation email.
+          </p>
+          <form id="rsvp-form" class="rsvp-form hidden uuid-hide-show" action="" method="POST">
 
             <!-- Begin Group details -->
             <div class="row">
@@ -501,6 +521,10 @@
       <div class="row">
         <div class="col-xs-12 col-md-12 text-center content">
           <span class="to-top-wrapper"><a href="#top" class="to-top"><i class="fa fa-angle-up"></i></a></span>
+          <p>
+            This site is a work in progress.<br /><br />We will have more information and features (eg. Collaborative Spotify playlists and Google Photos album) available as the date approaches.<br />
+            For now, please see our temporary info site at <a href="theknot.com/jennifermarriesoliver" >theknot.com/jennifermarriesoliver</a> for advice on attending the wedding.
+          </p>
           <p><a href="https://github.com/ocouch/wedding-website#wedding-website">About this site</a></p>
         </div>
       </div>
@@ -519,7 +543,7 @@
   <script src="node_modules/waypoints/lib/jquery.waypoints.min.js"></script>
   <script src="js/vendor/ouical.js"></script> <!-- Add to calendar -->
   <script src="js/scripts.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlPw3GQYI3faa_9mRE6plWuM7xNEmrwH0&callback=initMap"></script>
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlPw3GQYI3faa_9mRE6plWuM7xNEmrwH0&callback=initMap"></script> -->
 </body>
 
 </html>

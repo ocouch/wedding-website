@@ -209,90 +209,117 @@ $(document).ready(function() {
 
   /********************** RSVP Form **********************/
   let urlQueryString = new URLSearchParams(window.location.search);
-console.log(urlQueryString);
-  if (urlQueryString.has('uuid')){
-    // We have the bare minimum required pre-fill dataset
+  //Only show the form if there's a uuid parameter (ie. User has clicked RSVP link in invitation email)
+  if (urlQueryString.has('uuid')) {
+    // We have the bare minimum required to enable the RSVP form
     let guests = 1;
     if (urlQueryString.has('guest_count')) {
       guests = urlQueryString.get('guest_count');
     }
 
+    //Display the form
+    $('.uuid-hide-show').toggleClass('hidden');
+
     //Add the form fields for user to enter guest info.
-    for (i=guests; i>0; i--) {
-      AddAGuest();
+    for (i = guests; i > 0; i--) {
+      AddAGuest(false); //Don't re-initalise Bootstrap popovers every time a guest is added
     }
+    //Initialise Bootstrap popovers - just the once is enough
+    $('[data-toggle="popover"]').popover();
 
     // Pre-fill the form fields
-    for (let [key, value] of urlQueryString){
-      console.log('key: ' + key)
-      console.log('value: ' + value);
-      $("[name="+key+"]").val(value);
-      if (key.startsWith("attendee___")){
-        $("[id$=header___"+key.split("___")[1]+"]").text(value);
+    for (let [key, value] of urlQueryString) {
+      $("[name=" + key + "]").val(value);
+      if (key.startsWith("attendee___")) {
+        $("[id$=header___" + key.split("___")[1] + "]").text(value);
       }
     }
-  }else{
 
-  }
-  //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
-  //$("#rsvp-form").dirty({preventLeaving: true});
+    //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
+    //$("#rsvp-form").dirty({preventLeaving: true});
 
-  //Enable bootstrap popover plugin
-  $('[data-toggle="popover"]').popover();
 
-  // Swap +/- symbols on headers when expanding/closing
-  $(document).on('hidden.bs.collapse', '.section-title', function(event) {
-    let guestNumber = event.target.id.split('___')[1]; //Get guest number
-    $('#accordionSymbol___' + guestNumber).addClass("fa-plus");
-    $('#accordionSymbol___' + guestNumber).removeClass("fa-minus");
-  });
+    /**** RSVP Form event listeners ****/
 
-  $(document).on('show.bs.collapse', '.section-title', function(event) {
-    let guestNumber = event.target.id.split('___')[1];
-    $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
-    $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
-  });
+    // Swap +/- symbols on headers when expanding/closing sections
+    $(document).on('hidden.bs.collapse', '.section-title', function(event) {
+      let guestNumber = event.target.id.split('___')[1]; //Get guest number
+      $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
+      $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
+    });
+    $(document).on('show.bs.collapse', '.section-title', function(event) {
+      let guestNumber = event.target.id.split('___')[1];
+      $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
+      $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
+    });
 
-  $('#rsvp-form').on('submit', function(e) {
-    e.preventDefault(); /* Prevents form submission. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
-    var formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
+    //Add Error highlighting upon validation issues
+    $('input, select').on('invalid', function (e) {
+      //Expand collapsible sections with a validation error
+      $(this).parents('.section-title').addClass('in'); //Note: The invalid event does not bubble, so event capturing is not possible. Need to find the parent.
 
-    $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
+      //Set the Plus/Minus symbol to Minus on the section we just expanded
+      let guestNumber = $(this).prop('id').split('___')[1]; //Get guest number
+      $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
+      $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
 
-    //list of valid UUID hashes for basic typo prevention and (limited) security.
-    const md5_hash_array =
-   ['8cfa2282b17de0a598c010f5f0109e7d'];
+      //Highlight the field with a validation issue for the user
+      $(this).addClass('has-error');
+      $(this).parentsUntil('.form-input-group').addClass('has-error');
+    });
 
-    if (md5_hash_array.indexOf(MD5($('#uuid').val() + $('#salt').val())) < 0) {
-      $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your password seems to be incorrect. Please contact us for help!'));
-    } else {
-      $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
-        .done(function(returnData) {
-          console.log('Http request successful');
-          console.log(returnData);
-          if (returnData.result === "error") {
-            $('#alert-wrapper').html(alert_markup('danger', returnData.message));
-          } else {
-            $('#alert-wrapper').html('');
-            $('#rsvp-modal').modal('show');
-          }
-        })
-        .fail(function(returnData) {
-          console.log('HTTP Request Failed');
-          console.log(returnData);
-          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
-        });
-     }
-  });
+    //Clear validation error highlighting when user updates the value
+    $('input, select').on('input', function (e) {
+      $(this).removeClass('has-error');
+      $(this).parentsUntil('.form-input-group').removeClass('has-error');
+    });
 
-  //Hide popovers on click close button
-  $(document).click(function (e) {
-    if ($(e.target).is('.close')) {
-      e.preventDefault();
-      e.stopPropagation();
-      $('.popover').popover('hide');
+    //Checkbox children toggle
+    function toggleCheckboxChildren(element, guestNumber){
+      if ($(this).prop('checked') == false){ $('#allergens_collapse___${guestCount} input').prop('checked', false); $('#allergens_collapse___${guestCount} .other-input').val(''); };
     }
-});
+
+    //Form submission
+    $('#rsvp-form').on('submit', function(e) {
+      e.preventDefault(); /* Prevents standard form submission handling. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
+      var formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
+
+      $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
+
+      //list of valid UUID hashes for basic typo prevention and (limited) security.
+      const md5_hash_array = ['8cfa2282b17de0a598c010f5f0109e7d'];
+
+      if (md5_hash_array.indexOf(MD5($('#uuid').val() + $('#salt').val())) < 0) {
+        $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your password seems to be incorrect. Please contact us for help!'));
+      } else {
+        $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
+          .done(function(returnData) {
+            console.log('Http request successful');
+            console.log(returnData);
+            if (returnData.result === "error") {
+              $('#alert-wrapper').html(alert_markup('danger', returnData.message));
+            } else {
+              $('#alert-wrapper').html('');
+              $('#rsvp-modal').modal('show');
+            }
+          })
+          .fail(function(returnData) {
+            console.log('HTTP Request Failed');
+            console.log(returnData);
+            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
+          });
+      }
+    });
+
+    //Hide popovers on click close button
+    $(document).click(function(e) {
+      if ($(e.target).is('.close')) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('.popover').popover('hide');
+      }
+    });
+  }
 
 }); // End $(document).ready
 
@@ -308,8 +335,9 @@ function copyGuestNametoHeader(element) {
 }
 
 //RSVP Form: Add a new guest
-function AddAGuest(guestLimit = 10) {
+function AddAGuest(initPopovers = true, guestLimit = 10) {
   let guestCount = parseInt($(".guests").length) + 1;
+  guestLimit = parseInt(guestLimit);
 
   const template = `<!-- Begin Guest ${guestCount} -->
   <div class="form-input-group multi-input-group guests" id="guest___${guestCount}">
@@ -355,8 +383,8 @@ function AddAGuest(guestLimit = 10) {
       <!-- Begin Guest ${guestCount} Allergens -->
       <div class="col-xs-12">
         <div class="form-input-group">
-          <div class="checkbox">
-            <label><input type="checkbox" data-toggle="collapse" data-target="#allergens_collapse___${guestCount}" onclick="if ($(this).prop('checked') == false){ $('#allergens_collapse___${guestCount} input').prop('checked', false); $('#allergens_collapse___${guestCount} .other-input').val(''); };" />Food Allergies / Intolerances</label>
+          <div class="checkbox pointer" data-toggle="collapse" data-target="#allergens_collapse___${guestCount}" onclick="if (event.target.tagName != 'INPUT' && event.target.tagName != 'LABEL') $('#allergens_parent___${guestCount}').prop('checked', !($('#allergens_parent___${guestCount}').prop('checked')));" >
+            <label><input type="checkbox" id="allergens_parent___${guestCount}" />Food Allergies / Intolerances</label>
           </div>
           <div class="collapse" id="allergens_collapse___${guestCount}" aria-expanded="false">
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xlg-3">
@@ -473,7 +501,10 @@ function AddAGuest(guestLimit = 10) {
 
   if (guestCount <= guestLimit) {
     $(template).insertBefore("guestInsertionMarker");
-    $('[data-toggle="popover"]').popover();
+    //Event listener to expand form section on invalid form element
+    if (initPopovers) {
+      $('[data-toggle="popover"]').popover(); //Re-initialise Bootstrap popovers for new fields.
+    }
   } else {
     $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> You can only RSVP for a maximum of ' + guestLimit + ' people at once.'));
   }
@@ -500,7 +531,7 @@ function deleteGuest(deleteButton) {
       //Update the delete button target
       document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
 
-      //I'm sure there's a better way to do this, say by recursively looping through all elements and their attributes,
+      //There's a better way to do this, say by recursively looping through all DOM nodes,
       //but if it's stupid and it works...
 
       //update all name attributes
@@ -539,8 +570,8 @@ function deleteGuest(deleteButton) {
 
 
       /*
-      This approach works, but because it replaces the HTML using strings
-      all field values and checked statuses are lost.
+      This approach works, but because it overwirtes the HTML using strings
+      the DOM is rebuilt, and all field values and checked statuses are lost.
 
       //Update all the human legible info
       let target = document.getElementById('guest___' + iNext);
@@ -558,8 +589,9 @@ function deleteGuest(deleteButton) {
   $("[data-toggle='popover']").popover();
 }
 
-/********************** Extras **********************/
 
+/********************** Extras **********************/
+/*
 // Google map
 function initMap() {
   var location = {
@@ -594,7 +626,7 @@ function initBBSRMap() {
     map: map
   });
 }
-
+*/
 // alert_markup
 function alert_markup(alert_type, msg) {
   return '<div class="alert alert-' + alert_type + '" role="alert">' + msg + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button></div>';
