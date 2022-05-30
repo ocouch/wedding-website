@@ -255,6 +255,7 @@ $(document).ready(function() {
 
       //Set the Plus/Minus symbol to Minus on the section we just expanded
       let guestNumber = $(this).prop('id').split('___')[1]; //Get guest number
+console.log('guestNumber');
       $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
       $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
 
