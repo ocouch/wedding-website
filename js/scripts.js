@@ -242,15 +242,10 @@ $(document).ready(function() {
     /**** RSVP Form event listeners ****/
 
     // Swap +/- symbols on headers when expanding/closing sections
-    $(document).on('hidden.bs.collapse', '.section-title', function(event) {
+    $(document).on('hidden.bs.collapse show.bs.collapse', '.section-title', function(event) {
       let guestNumber = event.target.id.split('___')[1]; //Get guest number
       $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
       $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
-    });
-    $(document).on('show.bs.collapse', '.section-title', function(event) {
-      let guestNumber = event.target.id.split('___')[1];
-      $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
-      $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
     });
 
     //Add Error highlighting upon validation issues
