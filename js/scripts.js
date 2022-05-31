@@ -184,23 +184,25 @@ $(document).ready(function() {
     },
     data: {
       // Event title
-      title: "Ram and Antara's Wedding",
+      title: "Jen & Ollie's Wedding",
 
       // Event start date
-      start: new Date('Nov 27, 2017 10:00'),
+      start: new Date('2022-09-22'),
 
       // Event duration (IN MINUTES)
       // duration: 120,
 
       // You can also choose to set an end time
       // If an end time is set, this will take precedence over duration
-      end: new Date('Nov 29, 2017 00:00'),
+      end: new Date('2022-09-23'),
+
+      allDay: true, //allDay events
 
       // Event Address
-      address: 'ITC Fortune Park Hotel, Kolkata',
+      address: 'The Greenhouse Eatery, Huntingdale Pl, Medowie, NSW, 2318, Australia',
 
       // Event Description
-      description: "We can't wait to see you on our big day. For any queries or issues, please contact Mr. Amit Roy at +91 9876543210."
+      description: "We're looking forward to seeing you there! For any queries, please email or call us."
     }
   });
 
@@ -212,99 +214,148 @@ $(document).ready(function() {
   //Only show the form if there's a uuid parameter (ie. User has clicked RSVP link in invitation email)
   if (urlQueryString.has('uuid')) {
     // We have the bare minimum required to enable the RSVP form
-    let guests = 1;
-    if (urlQueryString.has('guest_count')) {
-      guests = urlQueryString.get('guest_count');
-    }
-
-    //Display the form
+    //Display the form / hide the instructions to link in email
     $('.uuid-hide-show').toggleClass('hidden');
+
+    let guests = 1; //1 guest by default
+    if (urlQueryString.has('guest_count')) {
+      //Set guests to value of guest_count parameter (and sanitize)
+      guests = Math.max(urlQueryString.get('guest_count') || 0, 1);
+    }
 
     //Add the form fields for user to enter guest info.
     for (i = guests; i > 0; i--) {
       AddAGuest(false); //Don't re-initalise Bootstrap popovers every time a guest is added
     }
-    //Initialise Bootstrap popovers - just the once is enough
+    //Manually initialise the support functions
     $('[data-toggle="popover"]').popover();
+    $('#rsvp-form input, #rsvp-form select').on('invalid', function(e) {
+      addErrorHighlighting(e.target);
+    });
 
     // Pre-fill the form fields
     for (let [key, value] of urlQueryString) {
       $("[name=" + key + "]").val(value);
+      //Make sure to update the section-title divs too
       if (key.startsWith("attendee___")) {
         $("[id$=header___" + key.split("___")[1] + "]").text(value);
       }
     }
 
     //Warn user on leave/reload page if there are unsubmitted changes to the RSVP form
-    //$("#rsvp-form").dirty({preventLeaving: true});
+    $("#rsvp-form").dirty({
+      preventLeaving: true
+    });
 
 
     /**** RSVP Form event listeners ****/
 
     // Swap +/- symbols on headers when expanding/closing sections
-    $(document).on('hidden.bs.collapse show.bs.collapse', '.section-title', function(event) {
-      let guestNumber = event.target.id.split('___')[1]; //Get guest number
-      $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
-      $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
+    //Currently a bug where open/closing a sub section will swap the +/-, but lowpriority
+    $('#rsvp-form').on('hidden.bs.collapse show.bs.collapse', function(event) {
+      if (event.target.id.includes('guestDiv')) { //Ignore nested collapsibles triggering this event
+        let guestNumber = event.target.id.split('___')[1]; //Get guest number
+        $('#accordionSymbol___' + guestNumber).toggleClass("fa-plus");
+        $('#accordionSymbol___' + guestNumber).toggleClass("fa-minus");
+      }
     });
 
-    //Add Error highlighting upon validation issues
-    $('input, select').on('invalid', function (e) {
-      //Expand collapsible sections with a validation error
-      $(this).parents('.section-title').addClass('in'); //Note: The invalid event does not bubble, so event capturing is not possible. Need to find the parent.
-
-      //Set the Plus/Minus symbol to Minus on the section we just expanded
-      let guestNumber = $(this).prop('id').split('___')[1]; //Get guest number
-console.log('guestNumber');
-      $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
-      $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
-
-      //Highlight the field with a validation issue for the user
-      $(this).addClass('has-error');
-      $(this).parentsUntil('.form-input-group').addClass('has-error');
+    //Ensure parent checkbox is checked when collapsible is expanded (overrides rapid input during animation)
+    $('#rsvp-form').on('shown.bs.collapse', function(event) {
+      if (event.target.id.includes('collapse___')) { //Ignore section-title collapsibles triggering this event
+        $(event.target).parent().find('[id*="parent"]').prop('checked', true);
+      }
     });
 
-    //Clear validation error highlighting when user updates the value
-    $('input, select').on('input', function (e) {
-      $(this).removeClass('has-error');
-      $(this).parentsUntil('.form-input-group').removeClass('has-error');
+    //Ensure parent checkbox is cleared when collapsible is collapsed  (overrides rapid input during animation)
+    $('#rsvp-form').on('hidden.bs.collapse', function(event) {
+      if (event.target.id.includes('collapse___')) { //Ignore section-title collapsibles triggering this event
+        $(event.target).parent().find('[id*="parent"]').prop('checked', false);
+      }
     });
 
-    //Checkbox children toggle
-    function toggleCheckboxChildren(element, guestNumber){
-      if ($(this).prop('checked') == false){ $('#allergens_collapse___${guestCount} input').prop('checked', false); $('#allergens_collapse___${guestCount} .other-input').val(''); };
-    }
+    //Clear validation error highlighting and setCustomValidity() messages when user updates the value of an input
+    //NB: validation error highlighting is applied in the AddAGuest() function
+    $('#rsvp-form').on('input', function(e) {
+      clearErrorHighlighting(e.target);
+      if (e.target.matches('[name^="dietary___"],[name^="allergens___"]')) {
+        e.target.closest('.form-input-group').querySelector('[id^="allergens_parent___"],[id^="dietary_parent___"]').setCustomValidity("");
+        clearErrorHighlighting(e.target.closest('.form-input-group').querySelector('[id^="allergens_parent___"],[id^="dietary_parent___"]'));
+      }
+    });
 
-    //Form submission
+    $('#rsvp_yesno').on('change', function() {
+      //if user RSVP's no, delete all guests from form
+      if (($(this).val() == 'No') && $('.guests').length >= 1) {
+        //But double check with them first
+        if (confirm("Click 'OK' to clear any guest information, then you can go ahead and submit the RSVP form.\n\nCancel to abort.")) {
+          //Delete all the guests
+          $('[id^="RemoveGuest___"]').each(function() {
+            deleteGuest(this);
+          });
+        } else {
+          //If user cancels setting RSVP to No, set to Yes
+          $(this).val('Yes');
+        }
+      }
+    });
+
+    /**************** RSVP Form Validation and Submission ***************/
     $('#rsvp-form').on('submit', function(e) {
-      e.preventDefault(); /* Prevents standard form submission handling. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
-      var formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
+      e.preventDefault(); /* Prevents standard form submission handling by default browser methods. See: https://www.w3schools.com/jsref/event_preventdefault.asp */
 
-      $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
+      let failedValidation = false;
+      //Validation - if user has selected allergens or dietary parent checkboxes, they must select one of the sub-checkboxes/radio buttons
+      $('[id^="allergens_parent___"]:checked,[id^="dietary_parent___"]:checked').parent().parent().parent().each(function(index, element) {
+        let checkedCount = $(element).find('[name^="allergens___"]:checked,[name^="dietary___"]:checked').length;
+        if (!(checkedCount)) {
+          //Whoops - ticked a parent box, but forgot to check a child
+          element.querySelector('[id^="allergens_parent___"],[id^="dietary_parent___"]').setCustomValidity("Please clear this checkbox, or select at least one sub-checkbox/radio button"); //Mark as invalid and set the message to display
+          element.querySelector('[id^="allergens_parent___"],[id^="dietary_parent___"]').reportValidity(); //Display the validation error message
+          failedValidation = true;
+        }
+      });
+
 
       //list of valid UUID hashes for basic typo prevention and (limited) security.
       const md5_hash_array = ['8cfa2282b17de0a598c010f5f0109e7d'];
 
       if (md5_hash_array.indexOf(MD5($('#uuid').val() + $('#salt').val())) < 0) {
-        $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your password seems to be incorrect. Please contact us for help!'));
-      } else {
-        $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
-          .done(function(returnData) {
-            console.log('Http request successful');
-            console.log(returnData);
-            if (returnData.result === "error") {
-              $('#alert-wrapper').html(alert_markup('danger', returnData.message));
-            } else {
-              $('#alert-wrapper').html('');
-              $('#rsvp-modal').modal('show');
-            }
-          })
-          .fail(function(returnData) {
-            console.log('HTTP Request Failed');
-            console.log(returnData);
-            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
-          });
+        $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your password seems to be incorrect. Note that it is case sensitive.'));
+        failedValidation = true;
       }
+      if (($('#rsvp_yesno').val() == 'No') && (parseInt($('.guests').length))) {
+        if (confirm("You've provided guest details, but have indicated you aren't attending.\n\nTo delete all guest info and continue with form submission, click 'OK'.\n\nTo abort submission and make changes, click 'Cancel'.")) {
+          $('[id^="RemoveGuest___"]').each(function() {
+            deleteGuest(this);
+          });
+        } else {
+          failedValidation = true;
+        }
+      } else if (($('#rsvp_yesno').val() == 'Yes') && (parseInt($('.guests').length) < 1)) {
+        $('#alert-wrapper').html(alert_markup('danger', "<strong>Hang on!</strong> If your party is attending, please add at least one guest."));
+        failedValidation = true;
+      }
+
+      if (failedValidation) return;
+
+      //We made it through all the validation, good to submit to server!
+      $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
+      const formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
+
+      $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
+        .done(function(returnData) {
+          if (returnData.result === "error") {
+            $('#alert-wrapper').html(alert_markup('danger', returnData.message));
+          } else {
+            $('#alert-wrapper').html('');
+            $('#rsvp-modal').modal('show');
+          }
+        })
+        .fail(function(returnData) {
+          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
+        });
+
     });
 
     //Hide popovers on click close button
@@ -330,8 +381,16 @@ function copyGuestNametoHeader(element) {
   }
 }
 
+//RSVP Form: Checkbox children toggle
+function clearCheckboxChildren(element, guestNumber) {
+  if ($(element).prop('checked') == false) {
+    $(`#allergens_collapse___${guestNumber} input`).prop('checked', false);
+    $(`#allergens_collapse___${guestNumber} .other-input`).val('');
+  };
+}
+
 //RSVP Form: Add a new guest
-function AddAGuest(initPopovers = true, guestLimit = 10) {
+function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
   let guestCount = parseInt($(".guests").length) + 1;
   guestLimit = parseInt(guestLimit);
 
@@ -379,8 +438,8 @@ function AddAGuest(initPopovers = true, guestLimit = 10) {
       <!-- Begin Guest ${guestCount} Allergens -->
       <div class="col-xs-12">
         <div class="form-input-group">
-          <div class="checkbox pointer" data-toggle="collapse" data-target="#allergens_collapse___${guestCount}" onclick="if (event.target.tagName != 'INPUT' && event.target.tagName != 'LABEL') $('#allergens_parent___${guestCount}').prop('checked', !($('#allergens_parent___${guestCount}').prop('checked')));" >
-            <label><input type="checkbox" id="allergens_parent___${guestCount}" />Food Allergies / Intolerances</label>
+          <div class="checkbox pointer" data-toggle="collapse" data-target="#allergens_collapse___${guestCount}" onclick="if (event.target.tagName != 'INPUT' && event.target.tagName != 'LABEL') {$('#allergens_parent___${guestCount}').prop('checked', !($('#allergens_parent___${guestCount}').prop('checked'))); $('#allergens_parent___${guestCount}').trigger('change');}" >
+            <label><input type="checkbox" id="allergens_parent___${guestCount}" onchange="clearCheckboxChildren(this, ${guestCount})"/>Food Allergies / Intolerances</label>
           </div>
           <div class="collapse" id="allergens_collapse___${guestCount}" aria-expanded="false">
             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xlg-3">
@@ -419,11 +478,11 @@ function AddAGuest(initPopovers = true, guestLimit = 10) {
             <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3 col-xlg-3">
               <div class="row">
                 <div class="col-xs-12">
-                  <input type="checkbox" name="allergens___${guestCount}" value="Other" /> <input type="text" name="allergens___${guestCount}" class="other-input" placeholder="Other">
+                  <input type="checkbox" name="allergens___${guestCount}" value="Other" onchange="if(!($(this).prop('checked'))) {$(this).next().val('');} $(this).next().focus();"/> <input type="text" name="allergens___${guestCount}" class="other-input" placeholder="Other" oninput="if($(this).val()==''){$(this).prev().prop('checked', false);}else{$(this).prev().prop('checked', true);}" tabindex="-1">
                 </div>
               </div>
             </div>
-            <!-- Fix for expanded collapse div sizing. Need this so that form-input-group border encompasses all internal elements when expanded. -->
+            <!-- Fix for expanded 'collapse' div sizing. Need this so that form-input-group border encompasses all internal elements when expanded. -->
             &nbsp;
           </div><!-- Collapsing div -->
         </div><!-- Allergens form-input-group -->
@@ -433,8 +492,8 @@ function AddAGuest(initPopovers = true, guestLimit = 10) {
       <!-- Begin Guest ${guestCount} Other dietary requirements -->
       <div class="col-xs-12 col-sm-12 text-left">
         <div class="form-input-group">
-          <div class="checkbox">
-            <label><input type="checkbox" data-toggle="collapse" data-target="#dietary_collapse___${guestCount}" onclick="if ($(this).prop('checked') == false){ $('#dietary_collapse___${guestCount} input').prop('checked', false); $('#dietary_collapse___${guestCount} .other-input').val(''); };"/>Other dietary restrictions / preferences</label>
+          <div class="checkbox pointer" data-toggle="collapse" data-target="#dietary_collapse___${guestCount}">
+            <label><input id="dietary_parent___${guestCount}"" type="checkbox" onclick="if ($(this).prop('checked') == false){ $('#dietary_collapse___${guestCount} input').prop('checked', false); $('#dietary_collapse___${guestCount} .other-input').val(''); };"/>Other dietary restrictions / preferences</label>
           </div>
           <div class="collapse" id="dietary_collapse___${guestCount}" aria-expanded="false">
             <!-- Vego div -->
@@ -486,7 +545,7 @@ function AddAGuest(initPopovers = true, guestLimit = 10) {
     <!-- Begin Guest ${guestCount} Remove button -->
       <div class="col-xs-12 col-lg-6 col-lg-offset-6">
         <div class="form-input-group">
-          <button class="btn-fill btn-danger btn" type="button" onmouseup="blur()" onclick="deleteGuest(this);" id="RemoveGuest___${guestCount}" data-guestnum="${guestCount}">Delete guest</button>
+          <button class="btn-fill btn-danger btn" type="button" onmouseup="blur()" onclick="deleteGuest(this);" id="RemoveGuest___${guestCount}" data-guestnum="${guestCount}">Remove Guest</button>
         </div>
       </div>
     </div>
@@ -496,11 +555,21 @@ function AddAGuest(initPopovers = true, guestLimit = 10) {
   <!-- End Guest ${guestCount} -->`;
 
   if (guestCount <= guestLimit) {
+    //Add a guest section
     $(template).insertBefore("guestInsertionMarker");
-    //Event listener to expand form section on invalid form element
-    if (initPopovers) {
+
+    //if initSupportFunctions == false, you must perform the following manually after calling this function
+    if (initSupportFunctions) {
       $('[data-toggle="popover"]').popover(); //Re-initialise Bootstrap popovers for new fields.
+
+      //Highlight fields with validation errors, and expand the containing collapsible
+      //NB: The invalid event does not bubble, so event delegation won't work for this,
+      //therefore, we need to make sure an 'invalid' event listener is added every time we add a form element.
+      $('#rsvp-form input, #rsvp-form select').on('invalid', function(e) {
+        addErrorHighlighting(e.target);
+      });
     }
+
   } else {
     $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> You can only RSVP for a maximum of ' + guestLimit + ' people at once.'));
   }
@@ -514,77 +583,89 @@ function deleteGuest(deleteButton) {
   $('#guest___' + guestNumber).remove();
   $("[data-toggle='popover']").popover('destroy'); //Clear all popovers (prevents orphaned popovers if user deletes while a popover is open)
 
-  if (guestCount <= 1) {
-    //We just deleted the last guest. Create a new guest.
-    AddAGuest();
+  //Re-number the existing guests (that are after the one we deleted)
+  for (let i = guestNumber; i < guestCount; i++) {
+    let iNext = i + 1;
+    let target = $('#guest___' + iNext);
 
-  } else {
-    //Re-number the existing guests (that are after this one)
-    for (let i = guestNumber; i < guestCount; i++) {
-      let iNext = i + 1;
-      let target = $('#guest___' + iNext);
+    //Update the delete button target
+    document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
 
-      //Update the delete button target
-      document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
+    //There's a better way to do this, say by recursively looping through all DOM nodes?
+    //But if it's stupid and it works...
 
-      //There's a better way to do this, say by recursively looping through all DOM nodes,
-      //but if it's stupid and it works...
+    //update all name attributes
+    $.each(target.find('[name$="___' + iNext + '"]'), function() {
+      $(this).attr('name', $(this).attr('name').replace("___" + iNext, "___" + i));
+    });
 
-      //update all name attributes
-      $.each(target.find('[name$="___' + iNext + '"]'), function() {
-        $(this).attr('name', $(this).attr('name').replace("___" + iNext, "___" + i));
-      });
+    //update all ID attributes
+    $.each(target.find('[id$="___' + iNext + '"]'), function() {
+      $(this).prop('id', $(this).prop('id').replace("___" + iNext, "___" + i));
+    });
 
-      //update all ID attributes
-      $.each(target.find('[id$="___' + iNext + '"]'), function() {
-        $(this).prop('id', $(this).prop('id').replace("___" + iNext, "___" + i));
-      });
+    //update all data-target attributes
+    $.each(target.find('[data-target$="___' + iNext + '"]'), function() {
+      $(this).attr('data-target', $(this).attr('data-target').replace("___" + iNext, "___" + i));
+    });
 
-      //update all data-target attributes
-      $.each(target.find('[data-target$="___' + iNext + '"]'), function() {
-        $(this).attr('data-target', $(this).attr('data-target').replace("___" + iNext, "___" + i));
-      });
+    //update all aria-controls attributes
+    $.each(target.find('[aria-controls$="___' + iNext + '"]'), function() {
+      $(this).attr('aria-controls', $(this).attr('aria-controls').replace("___" + iNext, "___" + i));
+    });
 
-      //update all aria-controls attributes
-      $.each(target.find('[aria-controls$="___' + iNext + '"]'), function() {
-        $(this).attr('aria-controls', $(this).attr('aria-controls').replace("___" + iNext, "___" + i));
-      });
+    //update all onclick attributes
+    $.each(target.find('[onclick*="___' + iNext + '"]'), function() {
+      let regex = new RegExp('___' + iNext, 'g');
+      $(this).attr('onclick', $(this).attr('onclick').replace(regex, "___" + i));
+    });
 
-      //update all onclick attributes
-      $.each(target.find('[onclick*="___' + iNext + '"]'), function() {
-        let regex = new RegExp('___' + iNext, 'g');
-        $(this).attr('onclick', $(this).attr('onclick').replace(regex, "___" + i));
-      });
-
-      //Update guest header
-      if (!($('#attendee___' + i).val())) {
-        $('#header___' + i).text('Guest ' + i);
-      }
-
-      //Update guest div ID
-      target.attr('id', 'guest___' + i);
-
-
-      /*
-      This approach works, but because it overwirtes the HTML using strings
-      the DOM is rebuilt, and all field values and checked statuses are lost.
-
-      //Update all the human legible info
-      let target = document.getElementById('guest___' + iNext);
-      let regex = new RegExp('[Gg]uest ' + iNext, 'g');
-      target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
-
-      //Update the rest of the elements
-      target = document.getElementById('guest___' + iNext);
-      regex = new RegExp('_{3}' + iNext, 'g');
-      target.outerHTML = target.outerHTML.replace(regex, '___' + i);
-      */
+    //Update guest header
+    if (!($('#attendee___' + i).val())) {
+      $('#header___' + i).text('Guest ' + i);
     }
+
+    //Update guest div ID
+    target.attr('id', 'guest___' + i);
+
+
+    /*
+    This approach works to update the form, but because it overwirtes the HTML using strings
+    the DOM is rebuilt, and all field values and checked statuses are lost.
+
+    //Update all the human legible info
+    let target = document.getElementById('guest___' + iNext);
+    let regex = new RegExp('[Gg]uest ' + iNext, 'g');
+    target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
+
+    //Update the rest of the elements
+    target = document.getElementById('guest___' + iNext);
+    regex = new RegExp('_{3}' + iNext, 'g');
+    target.outerHTML = target.outerHTML.replace(regex, '___' + i);
+    */
   }
   //Re-initialise popovers
   $("[data-toggle='popover']").popover();
 }
 
+function addErrorHighlighting(element) {
+  //Ensure collapsible containing the invalid element is expanded
+  $(element).parents('.section-title').addClass('in'); //Note: The invalid event does not bubble, so event capturing is not possible. Need to find the parent.
+
+  //Set the Plus/Minus symbol to Minus on the section we just expanded
+  let guestNumber = $(element).prop('name').split('___')[1]; //Get guest number
+  $('#accordionSymbol___' + guestNumber).removeClass("fa-plus");
+  $('#accordionSymbol___' + guestNumber).addClass("fa-minus");
+
+  //Highlight the field with a validation issue for the user
+  $(element).addClass('has-error');
+  $(element).parentsUntil('.form-input-group').addClass('has-error');
+}
+
+function clearErrorHighlighting(element) {
+  $(element).removeClass('has-error');
+  $(element).parentsUntil('.form-input-group').removeClass('has-error');
+}
 
 /********************** Extras **********************/
 /*

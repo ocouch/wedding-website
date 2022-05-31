@@ -419,8 +419,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span>
             </button>
             <div class="section-padding">
-              <h3>Thank you!</h3>
-              <p>We're looking forward to seeing you there!</p>
+              <h3>Thanks for confirming</h3>
+              <p>Use the link below to add the day to your calendar.</p>
               <div id="add-to-cal"></div>
             </div>
           </div>
@@ -449,21 +449,33 @@
               <!-- Begin Group name -->
               <div class="col-xs-12 col-xlg-6">
                 <div class="form-input-group">
-                  <i class="fa fa-users fa-lg"></i><input type="text" id="group_long" name="group_long" class="" placeholder="Your (group) name" required>
+                  <i class="fa fa-users fa-lg"></i><input type="text" id="group_long" name="group_long" class="readonly" placeholder="Your (group) name" required readonly>
                 </div>
               </div>
               <!-- End Group name -->
 
               <!-- Begin Group primary email -->
-              <div class="col-xs-12 col-lg-6">
+              <div class="col-xs-12 col-xlg-6">
                 <div class="form-input-group">
-                  <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="" placeholder="email@example.com" required>
+                  <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="readonly" placeholder="email@example.com" required readonly>
                 </div>
               </div>
               <!-- End Group primary email -->
 
+              <!-- Begin Group RSVP Yes/No -->
+              <div class="col-xs-12 col-md-6">
+                <div class="form-input-group">
+                  <i class="fa fa-envelope-open-o fa-lg"></i><select type="text" list="yesno" id="rsvp_yesno" name="rsvp_yesno" class="" placeholder="Will you be attending our wedding?" required>
+                    <option value="" hidden>Will you be attending?</option>
+                    <option value="Yes">Yes, will definitely be there</option>
+                    <option value="No">Sorry, can't make it</option>
+                  </select>
+                </div>
+              </div>
+              <!-- End Group RSVP Yes/No -->
+
               <!-- Begin Password salt -->
-              <div class="col-xs-12 col-lg-6 col-xlg-12">
+              <div class="col-xs-12 col-md-6">
                 <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Password <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
                   data-content="Please check your invitation email for your password. It is just above the 'RSVP' button.">
                   <div class="form-input-group">
@@ -522,9 +534,12 @@
         <div class="col-xs-12 col-md-12 text-center content">
           <span class="to-top-wrapper"><a href="#top" class="to-top"><i class="fa fa-angle-up"></i></a></span>
           <p>
-            This site is a work in progress.<br /><br />We will have more information and features (eg. Collaborative Spotify playlists and Google Photos album) available as the date approaches.<br />
-            For now, please see our temporary info site at <a href="theknot.com/jennifermarriesoliver" >theknot.com/jennifermarriesoliver</a> for advice on attending the wedding.
-          </p>
+            This site is a work in progress.<br /><br />
+            Please see our temporary info site at <strong><a href="https://theknot.com/jennifermarriesoliver" >theknot.com</a></strong> for advice on attending the wedding.</p>
+            <p>
+              We will have more information and features (eg. Collaborative Spotify playlists and Google Photos album) available as the date approaches.
+            </p>
+
           <p><a href="https://github.com/ocouch/wedding-website#wedding-website">About this site</a></p>
         </div>
       </div>

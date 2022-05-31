@@ -1517,3 +1517,8 @@ body.modal-open
   max-width: 30%;
   padding-top: 1.5rem;
 }
+
+.readonly
+{
+  background-color: #f3eae4;
+}

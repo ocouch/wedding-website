@@ -1,29 +1,27 @@
 ;(function(exports) {
     var MS_IN_MINUTES = 60 * 1000;
 
-    var formatTime = function(date) {
-        return date.toISOString().replace(/-|:|\.\d+/g, '');
+    var formatTime = function(date, allDay = false) {
+        return allDay ? date.toISOString().replace(/-|:|\.\d+/g, '').substr(0,8) : date.toISOString().replace(/-|:|\.\d+/g, '');
     };
 
     var calculateEndTime = function(event) {
-        return event.end ?
-            formatTime(event.end) :
-            formatTime(new Date(event.start.getTime() + (event.duration * MS_IN_MINUTES)));
+      return event.end ? event.end : new Date(event.start.getTime() + (event.duration * MS_IN_MINUTES));
     };
 
     var calendarGenerators = {
         google: function(event) {
-            var startTime = formatTime(event.start);
-            var endTime = calculateEndTime(event);
+            var startTime = formatTime(event.start, event.allDay);
+            var endTime = formatTime(calculateEndTime(event));
 
-            var href = encodeURI([
+            var href = ([
                 'https://www.google.com/calendar/render',
                 '?action=TEMPLATE',
-                '&text=' + (event.title || ''),
-                '&dates=' + (startTime || ''),
-                '/' + (endTime || ''),
-                '&details=' + (event.description || ''),
-                '&location=' + (event.address || ''),
+                '&text=' + encodeURIComponent(event.title || ''),
+                '&dates=' + encodeURIComponent(startTime || ''),
+                '/' + encodeURIComponent(endTime || ''),
+                '&details=' + encodeURIComponent(event.description || ''),
+                '&location=' + encodeURIComponent(event.address || ''),
                 '&sprop=&sprop=name:'
             ].join(''));
             return '<a class="icon-google" target="_blank" href="' +
@@ -31,41 +29,28 @@
         },
 
         yahoo: function(event) {
-            var eventDuration = event.end ?
-                ((event.end.getTime() - event.start.getTime())/ MS_IN_MINUTES) :
-                event.duration;
+          // Remove timezone from event time(s)
+              var st = formatTime(new Date(event.start - (event.start.getTimezoneOffset() * MS_IN_MINUTES))) || '';
+              var et = calculateEndTime(event);
+                  et = formatTime(new Date(et - (et.getTimezoneOffset() * MS_IN_MINUTES))) || '';
 
-            // Yahoo dates are crazy, we need to convert the duration from minutes to hh:mm
-            var yahooHourDuration = eventDuration < 600 ?
-                '0' + Math.floor((eventDuration / 60)) :
-                Math.floor((eventDuration / 60)) + '';
-
-            var yahooMinuteDuration = eventDuration % 60 < 10 ?
-                '0' + eventDuration % 60 :
-                eventDuration % 60 + '';
-
-            var yahooEventDuration = yahooHourDuration + yahooMinuteDuration;
-
-            // Remove timezone from event time
-            var st = formatTime(new Date(event.start - (event.start.getTimezoneOffset() *
-                MS_IN_MINUTES))) || '';
-
-            var href = encodeURI([
-                'http://calendar.yahoo.com/?v=60&view=d&type=20',
-                '&title=' + (event.title || ''),
-                '&st=' + st,
-                '&dur=' + (yahooEventDuration || ''),
-                '&desc=' + (event.description || ''),
-                '&in_loc=' + (event.address || '')
-            ].join(''));
+                  var href = ([
+                    'http://calendar.yahoo.com/?v=60&view=d&type=20',
+                    '&title=' + encodeURIComponent(event.title || ''),
+                    '&st=' + encodeURIComponent(st || ''),
+                    '&et=' + encodeURIComponent(et ||''),
+                    '&dur=' + encodeURIComponent((event.allDay ? 'allday' : '')  || ''),
+                    '&desc=' + encodeURIComponent(event.description || ''),
+                    '&in_loc=' + encodeURIComponent(event.address || '')
+                  ].join(''));
 
             return '<a class="icon-yahoo" target="_blank" href="' +
                 href + '">Yahoo! Calendar</a>';
         },
 
         ics: function(event, eClass, calendarName) {
-            var startTime = formatTime(event.start);
-            var endTime = calculateEndTime(event);
+            var startTime = formatTime(event.start, event.allDay);
+            var endTime = formatTime(calculateEndTime(event), event.allDay);
 
             var href = encodeURI(
                 'data:text/calendar;charset=utf8,' + [
