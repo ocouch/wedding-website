@@ -237,7 +237,7 @@ $(document).ready(function() {
     for (let [key, value] of urlQueryString) {
       $("[name=" + key + "]").val(value);
       //Make sure to update the section-title divs too
-      if (key.startsWith("attendee___")) {
+      if (key.startsWith("guest___")) {
         $("[id$=header___" + key.split("___")[1] + "]").text(value);
       }
     }
@@ -343,17 +343,20 @@ $(document).ready(function() {
       $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
       const formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
 
-      $.post('https://script.google.com/macros/s/AKfycbyMaZFH6o7zch5FT7n1wXlm9FNWi2vL2YBEX_zp8s_x1m1D82ky0c5fFpQOju1u5qQOUg/exec', formData)
+      $.post('https://script.google.com/macros/s/AKfycbzuE6kLDE4u70JBYBga7wHh8kFT5CKUoEVTMQxXC-5wGBbknsYsN4nMqny81_I-TZ5LjQ/exec', formData)
         .done(function(returnData) {
           if (returnData.result === "error") {
             $('#alert-wrapper').html(alert_markup('danger', returnData.message));
+            console.log(returnData);
           } else {
             $('#alert-wrapper').html('');
             $('#rsvp-modal').modal('show');
           }
         })
         .fail(function(returnData) {
-          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Something went wrong with the server. If it keeps happening, please let Oliver know!'));
+          console.log('HTTP Request Failed');
+          console.log(returnData);
+          $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> The server did not respond. Please try again, or contact Oliver for help.'));
         });
 
     });
@@ -373,7 +376,7 @@ $(document).ready(function() {
 //RSVP Form: Copy guest name to the section header
 function copyGuestNametoHeader(element) {
   let guestNumber = element.id.split('___')[1];
-  let userInput = $("#attendee___" + guestNumber).val();
+  let userInput = $("#guest___" + guestNumber).val();
   if (userInput.length) {
     $("#header___" + guestNumber).text(userInput);
   } else {
@@ -395,7 +398,7 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
   guestLimit = parseInt(guestLimit);
 
   const template = `<!-- Begin Guest ${guestCount} -->
-  <div class="form-input-group multi-input-group guests" id="guest___${guestCount}">
+  <div class="form-input-group multi-input-group guests" id="guestGroup___${guestCount}">
 
     <!-- Begin Guest ${guestCount} header -->
     <div class="row">
@@ -415,7 +418,7 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
           data-content="We will print placecards for everyone using names as entered here.<br /><br />Please enter full names for everyone, and double check the spelling">
           <div class="form-input-group">
             <i class="fa fa-user fa-lg"></i>
-            <input type="text" name="attendee___${guestCount}" id="attendee___${guestCount}" class="attendee" placeholder="Firstname & Lastname"  oninput="copyGuestNametoHeader(this);" required>
+            <input type="text" name="guest___${guestCount}" id="guest___${guestCount}" class="guest" placeholder="Firstname & Lastname"  oninput="copyGuestNametoHeader(this);" required>
             <i class="fa fa-info-circle fa-lg fa-right"></i>
           </div>
         </div>
@@ -425,11 +428,11 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
       <!-- Begin Guest ${guestCount} meal -->
       <div class="col-xs-12 col-lg-6">
         <div class="form-input-group">
-          <i class="fa fa-cutlery fa-lg"></i><select name="age_group___${guestCount}" class="" placeholder="Meal type" required>
+          <i class="fa fa-cutlery fa-lg"></i><select name="meal_type___${guestCount}" class="" placeholder="Meal type" required>
             <option value="" hidden>Select guest's meal type</option>
-            <option value="1">Adult meal</option>
-            <option value="2">Children's meal (Under 13)</option>
-            <option value="3">No meal (Infant)</option>
+            <option value="Adult meal">Adult meal</option>
+            <option value="Children's meal (Under 13)">Children's meal (Under 13)</option>
+            <option value="No meal (Infant)">No meal (Infant)</option>
           </select>
         </div>
       </div>
@@ -478,7 +481,7 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
             <div class="col-xs-12 col-sm-8 col-md-4 col-lg-3 col-xlg-3">
               <div class="row">
                 <div class="col-xs-12">
-                  <input type="checkbox" name="allergens___${guestCount}" value="Other" onchange="if(!($(this).prop('checked'))) {$(this).next().val('');} $(this).next().focus();"/> <input type="text" name="allergens___${guestCount}" class="other-input" placeholder="Other" oninput="if($(this).val()==''){$(this).prev().prop('checked', false);}else{$(this).prev().prop('checked', true);}" tabindex="-1">
+                  <input type="checkbox" name="allergens___${guestCount}" value="" onchange="if(!($(this).prop('checked'))) {$(this).next().val('');} $(this).next().focus();"/> <input type="text" name="allergens___${guestCount}" class="other-input" placeholder="Other" oninput="if($(this).val()==''){$(this).prev().prop('checked', false);}else{$(this).prev().prop('checked', true);}" tabindex="-1">
                 </div>
               </div>
             </div>
@@ -519,28 +522,28 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
       <div class="col-xs-12 col-lg-6">
         <div class="form-input-group">
           <i class="fa fa-universal-access fa-lg"></i>
-          <select name="special_seating___${guestCount}" class="" placeholder="Seating Type" required>
+          <select name="seating___${guestCount}" class="" placeholder="Seating Type" required>
             <option value="Normal" selected>Normal dining chair</option>
             <option value="High-chair">Children's high-chair</option>
-            <option value="No-Chair">No chair (BYO / Wheelchair)</option>
+            <option value="No_Chair">No chair (BYO / Wheelchair)</option>
           </select>
         </div>
       </div>
       <!-- End Guest ${guestCount} Chair type -->
 
-      <!-- Begin Guest ${guestCount} Mobility assistance -->
+      <!-- Begin Guest ${guestCount} mobility_assistance_required assistance -->
       <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Mobility assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="mobility_assistance_required assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
           data-content="The ceremony will be held on the 10th Fairway - this is a few hundred metres walk from the car park and reception venue. <br /><br />We will have golf carts (with drivers) available to give a lift to those who need it.">
-          <div class="form-input-group pointer"  onclick="$('#mobility___${guestCount}').prop('checked', !($('#mobility___${guestCount}').prop('checked')));">
+          <div class="form-input-group pointer"  onclick="$('#mobility_assistance_required___${guestCount}').prop('checked', !($('#mobility_assistance_required___${guestCount}').prop('checked')));">
             <i class="fa fa-wheelchair fa-lg"></i>
             <label class="pointer">Mobility assistance required</label>
-            <input name="mobility___${guestCount}" id="mobility___${guestCount}" type="checkbox" style="pointer-events: none;" onclick="event.stopPropagation()" />
+            <input name="mobility_assistance_required___${guestCount}" id="mobility_assistance_required___${guestCount}" type="checkbox" style="pointer-events: none;" onclick="event.stopPropagation()" />
             <i class="fa fa-info-circle fa-lg fa-right"></i>
           </div><!-- form-input-group -->
         </div><!-- Popover div -->
       </div>
-      <!-- End Guest ${guestCount} Mobility assistance -->
+      <!-- End Guest ${guestCount} mobility_assistance_required assistance -->
 
     <!-- Begin Guest ${guestCount} Remove button -->
       <div class="col-xs-12 col-lg-6 col-lg-offset-6">
@@ -580,13 +583,13 @@ function deleteGuest(deleteButton) {
   let guestNumber = parseInt(deleteButton.dataset.guestnum);
   let guestCount = parseInt($(".guests").length);
 
-  $('#guest___' + guestNumber).remove();
+  $('#guestGroup___' + guestNumber).remove();
   $("[data-toggle='popover']").popover('destroy'); //Clear all popovers (prevents orphaned popovers if user deletes while a popover is open)
 
   //Re-number the existing guests (that are after the one we deleted)
   for (let i = guestNumber; i < guestCount; i++) {
     let iNext = i + 1;
-    let target = $('#guest___' + iNext);
+    let target = $('#guestGroup___' + iNext);
 
     //Update the delete button target
     document.getElementById('RemoveGuest___' + iNext).dataset.guestnum = i;
@@ -621,12 +624,12 @@ function deleteGuest(deleteButton) {
     });
 
     //Update guest header
-    if (!($('#attendee___' + i).val())) {
+    if (!($('#guest___' + i).val())) {
       $('#header___' + i).text('Guest ' + i);
     }
 
     //Update guest div ID
-    target.attr('id', 'guest___' + i);
+    target.attr('id', 'guestGroup___' + i);
 
 
     /*
@@ -634,12 +637,12 @@ function deleteGuest(deleteButton) {
     the DOM is rebuilt, and all field values and checked statuses are lost.
 
     //Update all the human legible info
-    let target = document.getElementById('guest___' + iNext);
+    let target = document.getElementById('guestGroup___' + iNext);
     let regex = new RegExp('[Gg]uest ' + iNext, 'g');
     target.outerHTML = target.outerHTML.replace(regex, 'Guest ' + i);
 
     //Update the rest of the elements
-    target = document.getElementById('guest___' + iNext);
+    target = document.getElementById('guestGroup___' + iNext);
     regex = new RegExp('_{3}' + iNext, 'g');
     target.outerHTML = target.outerHTML.replace(regex, '___' + i);
     */
