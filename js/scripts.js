@@ -631,9 +631,9 @@ function AddAGuest(initSupportFunctions = true, guestLimit = 10) {
       </div>
       <!-- End Guest ${guestCount} Chair type -->
 
-      <!-- Begin Guest ${guestCount} mobility_assistance_required assistance -->
+      <!-- Begin Guest ${guestCount} mobility assistance -->
       <div class="col-xs-12 col-lg-6">
-        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="mobility_assistance_required assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+        <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Mobility assistance <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
           data-content="The ceremony will be held on the 10th Fairway - this is a few hundred metres walk from the car park and reception venue. <br /><br />We will have golf carts (with drivers) available to give a lift to those who need it.">
           <div class="form-input-group pointer"  onclick="$('#mobility_assistance_required___${guestCount}').prop('checked', !($('#mobility_assistance_required___${guestCount}').prop('checked')));">
             <i class="fa fa-wheelchair fa-lg"></i>
