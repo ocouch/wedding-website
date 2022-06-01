@@ -443,7 +443,7 @@ $(document).ready(function() {
       $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> Saving your details.'));
       const formData = $(this).serialize(); /* https://api.jquery.com/serialize/ */
 
-      $.post('https://script.google.com/macros/s/AKfycbzuE6kLDE4u70JBYBga7wHh8kFT5CKUoEVTMQxXC-5wGBbknsYsN4nMqny81_I-TZ5LjQ/exec', formData)
+      $.post('https://script.google.com/macros/s/AKfycbxwG3bm3fLwPkMB55J-9l8HVR4gken8bgUVDK8xRPhVNAk83GIbfiQSbPzjd5m1HF9q2g/exec', formData)
         .done(function(returnData) {
           if (returnData.result === "error") {
             $('#alert-wrapper').html(alert_markup('danger', returnData.message));
