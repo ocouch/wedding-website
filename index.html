@@ -72,7 +72,7 @@
           <div class="hero-content text-center">
 
             <img src="img/logo-lg.png">
-                </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -82,6 +82,21 @@
       </div>
     </div>
     <div class="down-arrow floating-arrow"><a href="#rsvp"><i class="fa fa-angle-down"></i></a></div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-xlg-4 col-xlg-offset-4 text-center content" style="padding-top: 20px;">
+          <p>
+            Please see our temporary info site at <br /><strong><a href="https://theknot.com/jennifermarriesoliver">theknot.com</a></strong><br /> for advice on attending the wedding.
+          </p>
+          <p>
+            This site is a work in progress.<br />
+            We will have more information and features (eg. Collaborative Spotify playlists and Google Photos album) available as the date approaches.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
   <section class="rsvp text-center" id="rsvp">
 
@@ -104,99 +119,99 @@
     <!-- Begin RSVP Form -->
     <div class="container">
       <div class="row">
-          <img alt="garland" src="/img/bushel_top_left.png" class="garland" />
-          <img src="/img/bushel_top_right.png" alt="garland" class="garland" />
-        </div>
+        <img alt="garland" src="/img/bushel_top_left.png" class="garland" />
+        <img src="/img/bushel_top_right.png" alt="garland" class="garland" />
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xlg-8 col-xlg-offset-2">
-          <h3>RSVP</h3>
-          <p>Please RSVP by the 1<sup>st</sup> of August, 2022</p>
-          <p class="uuid-hide-show">
-            To RSVP, please use the 'RSVP' link in your invitation email.
-          </p>
-          <form id="rsvp-form" class="rsvp-form hidden uuid-hide-show" action="" method="POST">
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-xlg-8 col-xlg-offset-2">
+        <h3>RSVP</h3>
+        <p>Please RSVP by the 1<sup>st</sup> of August, 2022</p>
+        <p class="uuid-hide-show">
+          To RSVP, please use the 'RSVP' link in your invitation email.
+        </p>
+        <form id="rsvp-form" class="rsvp-form hidden uuid-hide-show" action="" method="POST">
 
-            <!-- Begin Group details -->
-            <div class="row">
-              <!-- Begin Group name -->
-              <div class="col-xs-12 col-xlg-6">
+          <!-- Begin Group details -->
+          <div class="row">
+            <!-- Begin Group name -->
+            <div class="col-xs-12 col-xlg-6">
+              <div class="form-input-group">
+                <i class="fa fa-users fa-lg"></i><input type="text" id="group_name" name="group_name" class="readonly" placeholder="Your (group) name" required readonly>
+              </div>
+            </div>
+            <!-- End Group name -->
+
+            <!-- Begin Group primary email -->
+            <div class="col-xs-12 col-xlg-6">
+              <div class="form-input-group">
+                <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="readonly" placeholder="email@example.com" required readonly>
+              </div>
+            </div>
+            <!-- End Group primary email -->
+
+            <!-- Begin Group RSVP Yes/No -->
+            <div class="col-xs-12 col-md-6">
+              <div class="form-input-group">
+                <i class="fa fa-envelope-open-o fa-lg"></i><select type="text" list="yesno" id="rsvp_yesno" name="rsvp_yesno" class="" placeholder="Will you be attending our wedding?" required>
+                  <option value="" hidden>Will you be attending?</option>
+                  <option value="Yes">Yes, will definitely be there</option>
+                  <option value="No">Sorry, can't make it</option>
+                </select>
+              </div>
+            </div>
+            <!-- End Group RSVP Yes/No -->
+
+            <!-- Begin Password salt -->
+            <div class="col-xs-12 col-md-6">
+              <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Password <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+                data-content="Please check your invitation email for your password. It is just above the 'RSVP' button.">
                 <div class="form-input-group">
-                  <i class="fa fa-users fa-lg"></i><input type="text" id="group_name" name="group_name" class="readonly" placeholder="Your (group) name" required readonly>
+                  <i class="fa fa-key fa-lg"></i><input type="text" name="salt" id="salt" class="" placeholder="Password" required><i class="fa fa-info-circle fa-lg fa-right"></i>
                 </div>
               </div>
-              <!-- End Group name -->
+            </div>
+            <!-- End  Password salt -->
 
-              <!-- Begin Group primary email -->
-              <div class="col-xs-12 col-xlg-6">
-                <div class="form-input-group">
-                  <i class="fa fa-at fa-lg"></i><input type="email" id="email" name="email" class="readonly" placeholder="email@example.com" required readonly>
-                </div>
-              </div>
-              <!-- End Group primary email -->
-
-              <!-- Begin Group RSVP Yes/No -->
-              <div class="col-xs-12 col-md-6">
-                <div class="form-input-group">
-                  <i class="fa fa-envelope-open-o fa-lg"></i><select type="text" list="yesno" id="rsvp_yesno" name="rsvp_yesno" class="" placeholder="Will you be attending our wedding?" required>
-                    <option value="" hidden>Will you be attending?</option>
-                    <option value="Yes">Yes, will definitely be there</option>
-                    <option value="No">Sorry, can't make it</option>
-                  </select>
-                </div>
-              </div>
-              <!-- End Group RSVP Yes/No -->
-
-              <!-- Begin Password salt -->
-              <div class="col-xs-12 col-md-6">
-                <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="Password <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-                  data-content="Please check your invitation email for your password. It is just above the 'RSVP' button.">
-                  <div class="form-input-group">
-                    <i class="fa fa-key fa-lg"></i><input type="text" name="salt" id="salt" class="" placeholder="Password" required><i class="fa fa-info-circle fa-lg fa-right"></i>
-                  </div>
-                </div>
-              </div>
-              <!-- End  Password salt -->
-
-              <!-- Begin UUID -->
-              <div class="hidden">
-                <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="UUID <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
-                  data-content="Please follow the link in your email invitation - this value should then pre-fill automatically.">
+            <!-- Begin UUID -->
+            <div class="hidden">
+              <div data-toggle="popover" data-trigger="hover focus" data-delay='{ "show": 200, "hide": 350 }' title="UUID <a class='close' href='#'>&times;</a>" data-placement="auto bottom" data-html="true"
+                data-content="Please follow the link in your email invitation - this value should then pre-fill automatically.">
                 <div class="form-input-group">
                   <i class="fa fa-key fa-lg"></i><input type="text" name="uuid" id="uuid" class="" placeholder="UUID" hidden aria-hidden="true" tabindex="-1"><i class="fa fa-info-circle fa-lg fa-right"></i>
                 </div>
-                </div>
-              </div>
-              <!-- End  UUID -->
-            </div>
-            <!-- End Group details -->
-
-            <!-- Form fields for individual guest details inserted here by AddAGuest() - see /js/scripts.js -->
-            <guestInsertionMarker></guestInsertionMarker>
-
-            <!-- Alert div -->
-            <div class="row">
-              <div class="col-xs-12 col-sm-12" id="alert-wrapper"></div>
-            </div>
-
-            <!-- Begin Add/Submit Guest 1 Buttons -->
-            <div class="row">
-              <div class="col-xs-6 col-sm-6">
-                <div class="form-input-group">
-                  <button class="btn btn-success btn-fill" type="button" role="button" onclick="AddAGuest(); $('#rsvp-form').find('input').change();" onmouseup="blur()" id="AddGuest">Add guest</button>
-                </div>
-              </div>
-              <div class="col-xs-6 col-sm-6">
-                <button class="btn-fill rsvp-btn" type="submit">
-                  Submit RSVP
-                </button>
               </div>
             </div>
-            <!-- Begin Add/Submit Buttons -->
+            <!-- End  UUID -->
+          </div>
+          <!-- End Group details -->
 
-          </form><!-- RSVP form -->
-        </div><!-- RSVP Section bootstrap column -->
-      </div><!-- RSVP Section boostrap row -->
+          <!-- Form fields for individual guest details inserted here by AddAGuest() - see /js/scripts.js -->
+          <guestInsertionMarker></guestInsertionMarker>
+
+          <!-- Alert div -->
+          <div class="row">
+            <div class="col-xs-12 col-sm-12" id="alert-wrapper"></div>
+          </div>
+
+          <!-- Begin Add/Submit Guest 1 Buttons -->
+          <div class="row">
+            <div class="col-xs-6 col-sm-6">
+              <div class="form-input-group">
+                <button class="btn btn-success btn-fill" type="button" role="button" onclick="AddAGuest(); $('#rsvp-form').find('input').change();" onmouseup="blur()" id="AddGuest">Add guest</button>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6">
+              <button class="btn-fill rsvp-btn" type="submit">
+                Submit RSVP
+              </button>
+            </div>
+          </div>
+          <!-- Begin Add/Submit Buttons -->
+
+        </form><!-- RSVP form -->
+      </div><!-- RSVP Section bootstrap column -->
+    </div><!-- RSVP Section boostrap row -->
     </div><!-- Bootstrap contatin -->
     <!-- End RSVP Form -->
 
@@ -206,13 +221,6 @@
       <div class="row">
         <div class="col-xs-12 col-md-12 text-center content">
           <span class="to-top-wrapper"><a href="#top" class="to-top"><i class="fa fa-angle-up"></i></a></span>
-          <p>
-            This site is a work in progress.<br /><br />
-            Please see our temporary info site at <strong><a href="https://theknot.com/jennifermarriesoliver" >theknot.com</a></strong> for advice on attending the wedding.</p>
-            <p>
-              We will have more information and features (eg. Collaborative Spotify playlists and Google Photos album) available as the date approaches.
-            </p>
-
           <p><a href="https://github.com/ocouch/wedding-website/tree/initial-customisations#wedding-website">About this site</a></p>
         </div>
       </div>
