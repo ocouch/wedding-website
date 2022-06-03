@@ -33,12 +33,12 @@
   <meta name="theme-color" content="#141812">
 
   <link rel="stylesheet" href="css/normalize.min.css">
-  <link rel="stylesheet" href="css/jquery.fancybox.css">
-  <link rel="stylesheet" href="css/flexslider.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="css/flexslider.min.css">
   <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
   <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css"> <!-- An icon pack -->
   <link rel="stylesheet" href="css/styles.min.css">
-  <link rel="stylesheet" href="css/queries.css"> <!-- Media queries for responsiveness -->
+  <link rel="stylesheet" href="css/queries.min.css"> <!-- Media queries for responsiveness -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 </head>
@@ -184,10 +184,21 @@
             </div>
             <!-- End  UUID -->
           </div>
+
           <!-- End Group details -->
 
           <!-- Form fields for individual guest details inserted here by AddAGuest() - see /js/scripts.js -->
           <guestInsertionMarker></guestInsertionMarker>
+
+          <!-- Begin Text Area Input -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-input-group">
+                <textarea class="form-control" rows="3" placeholder="Any thoughts / comments / feedback / suggestions / life advice?" name="comments"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- End Text Area Input -->
 
           <!-- Alert div -->
           <div class="row">
@@ -196,15 +207,13 @@
 
           <!-- Begin Add/Submit Guest 1 Buttons -->
           <div class="row">
-            <div class="col-xs-6 col-sm-6">
+            <div class="col-xs-12 col-sm-6">
               <div class="form-input-group">
                 <button class="btn btn-success btn-fill" type="button" role="button" onclick="AddAGuest(); $('#rsvp-form').find('input').change();" onmouseup="blur()" id="AddGuest">Add guest</button>
               </div>
             </div>
-            <div class="col-xs-6 col-sm-6">
-              <button class="btn-fill rsvp-btn" type="submit">
-                Submit RSVP
-              </button>
+            <div class="col-xs-12 col-sm-6">
+              <button class="btn-fill rsvp-btn" type="submit">Submit RSVP</button>
             </div>
           </div>
           <!-- Begin Add/Submit Buttons -->
@@ -237,7 +246,7 @@
   <script src="js/vendor/jquery.flexslider-min.js"></script>
   <script src="js/jquery.mb.YTPlayer.min.js"></script>
   <script src="node_modules/waypoints/lib/jquery.waypoints.min.js"></script>
-  <script src="js/vendor/ouical.js"></script> <!-- Add to calendar -->
+  <script src="js/vendor/ouical.min.js"></script> <!-- Add to calendar -->
   <script src="js/scripts.min.js"></script>
   <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlPw3GQYI3faa_9mRE6plWuM7xNEmrwH0&callback=initMap"></script> -->
 </body>

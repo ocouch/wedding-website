@@ -561,7 +561,7 @@ section .header
 
 .hero .hero-content
 {
-    padding-top: 40%;
+    padding-top: 40vh;
 }
 
 .hero .hero-content img
