@@ -417,7 +417,8 @@ $(document).ready(function() {
         "451d78276bb2c3e876d7d9a2558a10b0",
         "ce56cb279ccb948579bf85695db69be4",
         "b273ab3d7b4f4a1095907801429559ec",
-        "ab149553c002f74310b27b781cda9881"
+        "ab149553c002f74310b27b781cda9881",
+        "04700e19b139f27c7b2e72b129f036ad"
       ];
 
       if (md5_hash_array.indexOf(MD5($('#uuid').val() + $('#salt').val())) < 0) {
